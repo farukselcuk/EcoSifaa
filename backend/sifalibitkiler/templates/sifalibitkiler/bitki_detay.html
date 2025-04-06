@@ -2,77 +2,92 @@
 {% load static %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-4">
-        <div class="card mb-4">
-            {% if bitki.resim %}
-            <img src="{{ bitki.resim.url }}" class="card-img-top" alt="{{ bitki.isim }}">
-            {% else %}
-            <img src="{% static 'images/default-plant.jpg' %}" class="card-img-top" alt="Varsayılan bitki resmi">
-            {% endif %}
-            <div class="card-body">
-                <h5 class="card-title">{{ bitki.isim }}</h5>
-                <p class="card-text">
-                    <span class="badge bg-success">{{ bitki.get_tip_display }}</span>
-                </p>
-                <div class="d-grid gap-2">
-                    <a href="{% url 'bitki_duzenle' bitki.pk %}" class="btn btn-primary">
-                        <i class="fas fa-edit me-2"></i>Düzenle
-                    </a>
-                    <a href="{% url 'bitki_sil' bitki.pk %}" class="btn btn-danger">
-                        <i class="fas fa-trash me-2"></i>Sil
-                    </a>
-                    <a href="{% url 'bitki_listesi' %}" class="btn btn-outline-secondary">
-                        <i class="fas fa-arrow-left me-2"></i>Geri Dön
-                    </a>
-                </div>
-            </div>
+<div class="container py-4">
+  <div class="row g-4">
+    <div class="col-lg-4">
+      <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+        {% if bitki.resim %}
+        <img src="{{ bitki.resim.url }}" class="card-img-top img-fluid" alt="{{ bitki.isim }}" loading="lazy">
+        {% else %}
+        <img src="{% static 'images/default-plant.jpg' %}" class="card-img-top img-fluid" alt="Varsayılan bitki resmi" loading="lazy">
+        {% endif %}
+        <div class="card-body">
+          <h3 class="card-title fw-bold text-success">{{ bitki.isim }}</h3>
+          <p class="card-text text-muted fst-italic mb-3">{{ bitki.bilimsel_isim }}</p>
+          <p class="card-text mb-4">
+            <span class="badge bg-success rounded-pill px-3 py-2">{{ bitki.get_tip_display }}</span>
+          </p>
+          <div class="d-grid gap-2">
+            <a href="{% url 'bitki_duzenle' bitki.pk %}" class="btn btn-primary rounded-pill">
+              <i class="bi bi-pencil-square me-2"></i>Düzenle
+            </a>
+            <a href="{% url 'bitki_sil' bitki.pk %}" class="btn btn-danger rounded-pill">
+              <i class="bi bi-trash me-2"></i>Sil
+            </a>
+            <a href="{% url 'bitki_listesi' %}" class="btn btn-outline-secondary rounded-pill">
+              <i class="bi bi-arrow-left me-2"></i>Geri Dön
+            </a>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <h3 class="card-title mb-4">Bitki Bilgileri</h3>
-                
-                <div class="mb-4">
-                    <h5><i class="fas fa-heart text-danger me-2"></i>Faydaları</h5>
-                    <p class="card-text">{{ bitki.faydalar|linebreaks }}</p>
-                </div>
+    
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm rounded-4 h-100">
+        <div class="card-body p-4 p-lg-5">
+          <h2 class="card-title fw-bold text-success mb-4">Bitki Bilgileri</h2>
+          
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center fw-bold">
+              <i class="bi bi-heart-pulse text-danger me-2"></i>Faydaları
+            </h5>
+            <div class="card-text ms-4 mt-2">{{ bitki.faydalar|linebreaks }}</div>
+          </div>
 
-                <div class="mb-4">
-                    <h5><i class="fas fa-hand-holding-medical text-success me-2"></i>Kullanım Alanları</h5>
-                    <p class="card-text">{{ bitki.kullanim|linebreaks }}</p>
-                </div>
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center fw-bold">
+              <i class="bi bi-bandaid text-success me-2"></i>Kullanım Alanları
+            </h5>
+            <div class="card-text ms-4 mt-2">{{ bitki.kullanim|linebreaks }}</div>
+          </div>
 
-                <div class="mb-4">
-                    <h5><i class="fas fa-mortar-pestle text-primary me-2"></i>Hazırlama</h5>
-                    <p class="card-text">{{ bitki.hazirlama|linebreaks }}</p>
-                </div>
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center fw-bold">
+              <i class="bi bi-cup-hot text-primary me-2"></i>Hazırlama
+            </h5>
+            <div class="card-text ms-4 mt-2">{{ bitki.hazirlama|linebreaks }}</div>
+          </div>
 
-                {% if bitki.uyarilar %}
-                <div class="mb-4">
-                    <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Uyarılar</h5>
-                    <p class="card-text">{{ bitki.uyarilar|linebreaks }}</p>
-                </div>
-                {% endif %}
+          {% if bitki.uyarilar %}
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center fw-bold">
+              <i class="bi bi-exclamation-triangle text-warning me-2"></i>Uyarılar
+            </h5>
+            <div class="card-text ms-4 mt-2">{{ bitki.uyarilar|linebreaks }}</div>
+          </div>
+          {% endif %}
 
-                <div class="mb-4">
-                    <h5><i class="fas fa-balance-scale text-info me-2"></i>Doz</h5>
-                    <p class="card-text">{{ bitki.doz }}</p>
-                </div>
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center fw-bold">
+              <i class="bi bi-rulers text-info me-2"></i>Doz
+            </h5>
+            <div class="card-text ms-4 mt-2">{{ bitki.doz }}</div>
+          </div>
 
-                <div class="mb-4">
-                    <h5><i class="fas fa-notes-medical text-danger me-2"></i>Rahatsızlıklar</h5>
-                    <p class="card-text">{{ bitki.rahatsizliklar|linebreaks }}</p>
-                </div>
+          <div class="mb-4">
+            <h5 class="d-flex align-items-center fw-bold">
+              <i class="bi bi-clipboard2-pulse text-danger me-2"></i>Rahatsızlıklar
+            </h5>
+            <div class="card-text ms-4 mt-2">{{ bitki.rahatsizliklar|linebreaks }}</div>
+          </div>
 
-                <div class="text-muted">
-                    <small>
-                        <i class="fas fa-clock me-1"></i>Son güncelleme: {{ bitki.guncelleme_tarihi|date:"d.m.Y H:i" }}
-                    </small>
-                </div>
-            </div>
+          <div class="text-muted mt-5 d-flex align-items-center">
+            <i class="bi bi-clock me-2"></i>
+            <small>Son güncelleme: {{ bitki.guncelleme_tarihi|date:"d.m.Y H:i" }}</small>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %} 

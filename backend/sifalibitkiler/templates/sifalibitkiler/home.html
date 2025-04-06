@@ -2,47 +2,111 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="row mb-4">
-        <div class="col">
-            <h1 class="display-4 text-center mb-4">EcoSifaa'ya Hoş Geldiniz</h1>
-            <p class="lead text-center">Doğal tedavi yöntemleri ve şifalı bitkiler hakkında bilgi edinin</p>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-leaf fa-3x text-success mb-3"></i>
-                    <h3 class="card-title">Şifalı Bitkiler</h3>
-                    <p class="card-text">Doğanın bize sunduğu şifalı bitkileri keşfedin ve faydalarını öğrenin.</p>
-                    <a href="{% url 'bitki_listesi' %}" class="btn btn-success">Bitkileri İncele</a>
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h1 class="display-4 fw-bold text-success mb-4">EcoSifaa ile Şifalı Bitkiler Dünyasını Keşfedin</h1>
+                <p class="lead mb-4">Doğanın sunduğu şifalı bitkilerin faydalarını, kullanım şekillerini ve hangi rahatsızlıklara iyi geldiğini öğrenebileceğiniz kapsamlı bir kaynak.</p>
+                <div class="d-grid gap-2 d-md-flex">
+                    <a href="{% url 'bitki_listesi' %}" class="btn btn-success btn-lg px-4 me-md-2">Bitkileri Keşfet</a>
+                    <a href="{% url 'rahatsizlik_listesi' %}" class="btn btn-outline-secondary btn-lg px-4">Rahatsızlıklar</a>
                 </div>
             </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-heartbeat fa-3x text-danger mb-3"></i>
-                    <h3 class="card-title">Rahatsızlıklar</h3>
-                    <p class="card-text">Rahatsızlıklar hakkında detaylı bilgi edinin ve doğal tedavi yöntemlerini öğrenin.</p>
-                    <a href="{% url 'rahatsizlik_listesi' %}" class="btn btn-danger">Rahatsızlıkları İncele</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
-                    <h3 class="card-title">Tedavi Önerileri</h3>
-                    <p class="card-text">Rahatsızlığınıza uygun doğal tedavi yöntemlerini bulun.</p>
-                    <a href="{% url 'tedavi_form' %}" class="btn btn-primary">Tedavi Önerisi Al</a>
-                </div>
+            <div class="col-lg-6">
+                <img src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" alt="Şifalı Bitkiler" class="img-fluid rounded shadow">
             </div>
         </div>
     </div>
-</div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold">EcoSifaa ile Neler Yapabilirsiniz?</h2>
+            <p class="text-muted">Bitkilerin şifalı dünyasında size rehberlik ediyoruz</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card p-4 text-center">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-flower1" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4>Şifalı Bitkiler</h4>
+                    <p class="text-muted">Doğanın bize sunduğu şifalı bitkileri keşfedin ve faydalarını öğrenin.</p>
+                    <a href="{% url 'bitki_listesi' %}" class="btn btn-outline-success mt-3">Bitkileri İncele</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card p-4 text-center">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-heart-pulse" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4>Rahatsızlıklar</h4>
+                    <p class="text-muted">Rahatsızlıklar hakkında detaylı bilgi edinin ve doğal tedavi yöntemlerini öğrenin.</p>
+                    <a href="{% url 'rahatsizlik_listesi' %}" class="btn btn-outline-success mt-3">Rahatsızlıkları İncele</a>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="card feature-card p-4 text-center">
+                    <div class="text-success mb-3">
+                        <i class="bi bi-clipboard2-pulse" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4>Tedavi Önerileri</h4>
+                    <p class="text-muted">Rahatsızlığınıza uygun doğal tedavi yöntemlerini bulun.</p>
+                    <a href="{% url 'tedavi_form' %}" class="btn btn-outline-success mt-3">Tedavi Önerisi Al</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h4 mb-4 text-success">EcoSifaa Projesi Nedir?</h3>
+                        <p>
+                            EcoSifaa, doğanın sunduğu şifalı bitkilerin ve onların potansiyel faydalarının geniş bir veritabanını sunan bir platformdur.
+                            Projemiz, geleneksel tıp bilgisi ile modern bilimsel araştırmaları bir araya getirerek, doğal tedavi yöntemleri
+                            hakkında kapsamlı ve güvenilir bilgiler sunmayı amaçlamaktadır.
+                        </p>
+                        <p>
+                            Bu platform, şifalı bitkiler ve onların özellikleri hakkında merak edilen bilgileri kolayca erişilebilir bir
+                            formatta sunarak, kullanıcıların doğal sağlık alternatifleri hakkında bilinçli kararlar vermelerine yardımcı olmayı hedefler.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4">
+                        <h3 class="h4 mb-4 text-success">Bilgilendirme</h3>
+                        <div class="alert alert-warning">
+                            <p class="mb-0">
+                                <strong>Önemli Uyarı:</strong> Bu sitede bulunan bilgiler yalnızca bilgilendirme amaçlıdır ve profesyonel tıbbi
+                                tavsiye, teşhis veya tedavi yerine geçmez. Herhangi bir sağlık sorunu veya durumu için her zaman
+                                sağlık uzmanınıza danışmanızı öneririz.
+                            </p>
+                        </div>
+                        <p class="mt-3">
+                            Bitkisel tedavilere başlamadan önce, özellikle hamilelik, emzirme, kronik rahatsızlıklar durumunda veya
+                            herhangi bir ilaç kullanıyorsanız, mutlaka bir sağlık uzmanına danışmalısınız. Bazı bitkiler ve bitkisel ürünler, 
+                            ilaçlarla etkileşime girebilir veya belirli durumlarda uygun olmayabilir.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %} 

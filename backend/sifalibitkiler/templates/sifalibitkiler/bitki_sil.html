@@ -2,53 +2,55 @@
 {% load static %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-body">
-                <h2 class="card-title mb-4">Bitki Sil</h2>
-                
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-triangle me-2"></i>
-                    <strong>Dikkat!</strong> Bu bitkiyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
-                </div>
-
-                <div class="card mb-4">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            {% if bitki.resim %}
-                            <img src="{{ bitki.resim.url }}" class="img-fluid rounded-start" alt="{{ bitki.isim }}">
-                            {% else %}
-                            <img src="{% static 'images/default-plant.jpg' %}" class="img-fluid rounded-start" alt="Varsayılan Bitki Resmi">
-                            {% endif %}
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ bitki.isim }}</h5>
-                                <p class="card-text">
-                                    <small class="text-muted">
-                                        <i class="fas fa-tag me-2"></i>{{ bitki.get_tip_display }}
-                                    </small>
-                                </p>
-                                <p class="card-text">{{ bitki.faydalar|truncatewords:30 }}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-trash me-2"></i>Sil
-                        </button>
-                        <a href="{% url 'bitki_detay' bitki.pk %}" class="btn btn-outline-secondary">
-                            <i class="fas fa-times me-2"></i>İptal
-                        </a>
-                    </div>
-                </form>
+<div class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 col-md-8">
+      <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4 p-lg-5">
+          <h2 class="card-title fw-bold text-danger mb-4 text-center">Bitki Sil</h2>
+          
+          <div class="alert alert-danger rounded-4 mb-4 d-flex align-items-center">
+            <i class="bi bi-exclamation-triangle-fill me-3 fs-4"></i>
+            <div>
+              <strong>Dikkat!</strong> Bu bitkiyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.
             </div>
+          </div>
+
+          <div class="card border-0 shadow-sm rounded-4 mb-4 overflow-hidden">
+            <div class="row g-0">
+              <div class="col-md-4">
+                {% if bitki.resim %}
+                <img src="{{ bitki.resim.url }}" class="img-fluid h-100 object-fit-cover" alt="{{ bitki.isim }}" loading="lazy" style="object-fit: cover;">
+                {% else %}
+                <img src="{% static 'images/default-plant.jpg' %}" class="img-fluid h-100 object-fit-cover" alt="Varsayılan Bitki Resmi" loading="lazy" style="object-fit: cover;">
+                {% endif %}
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title fw-bold text-success">{{ bitki.isim }}</h5>
+                  <p class="card-text">
+                    <span class="badge bg-success rounded-pill px-3 py-2">{{ bitki.get_tip_display }}</span>
+                  </p>
+                  <p class="card-text">{{ bitki.faydalar|truncatewords:30 }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <form method="post">
+            {% csrf_token %}
+            <div class="d-grid gap-3 mt-4">
+              <button type="submit" class="btn btn-danger btn-lg rounded-pill">
+                <i class="bi bi-trash-fill me-2"></i>Sil
+              </button>
+              <a href="{% url 'bitki_detay' bitki.pk %}" class="btn btn-outline-secondary rounded-pill">
+                <i class="bi bi-x-lg me-2"></i>İptal
+              </a>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 {% endblock %} 
