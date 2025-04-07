@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import '../api/api_service.dart';
-import '../models/bitki.dart';
+import 'package:ecosifaa_mobile/api/api_service.dart';
+import 'package:ecosifaa_mobile/models/bitki.dart';
 
 class BitkiProvider with ChangeNotifier {
   final ApiService _apiService = ApiService();
@@ -8,40 +8,33 @@ class BitkiProvider with ChangeNotifier {
   List<Bitki> _bitkiler = [];
   Bitki? _seciliBitki;
   bool _isLoading = false;
-  String? _error;
+  String _error = '';
 
   List<Bitki> get bitkiler => _bitkiler;
   Bitki? get seciliBitki => _seciliBitki;
   bool get isLoading => _isLoading;
-  String? get error => _error;
+  String get error => _error;
 
-  Future<void> fetchBitkiler() async {
+  Future<void> loadBitkiler() async {
     _isLoading = true;
-    _error = null;
+    _error = '';
     notifyListeners();
 
     try {
       _bitkiler = await _apiService.getBitkiler();
     } catch (e) {
       _error = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
     }
+
+    _isLoading = false;
+    notifyListeners();
   }
 
-  Future<void> fetchBitkiDetail(int id) async {
-    _isLoading = true;
-    _error = null;
-    notifyListeners();
-
+  Future<Bitki> getBitkiDetail(int id) async {
     try {
-      _seciliBitki = await _apiService.getBitkiDetail(id);
+      return await _apiService.getBitkiDetail(id);
     } catch (e) {
-      _error = e.toString();
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      throw Exception('Bitki detayı yüklenirken bir hata oluştu: $e');
     }
   }
 } 

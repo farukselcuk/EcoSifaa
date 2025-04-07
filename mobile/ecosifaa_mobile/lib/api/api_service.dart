@@ -6,7 +6,7 @@ import '../models/rahatsizlik.dart';
 
 class ApiService {
   // Emülatör için localhost
-  final String baseUrl = 'http://10.0.2.2:8000/api';
+  final String baseUrl = 'http://localhost:8000/api';
   final storage = const FlutterSecureStorage();
 
   Future<String?> _getToken() async {
@@ -24,38 +24,46 @@ class ApiService {
 
   Future<List<Bitki>> getBitkiler() async {
     try {
-      final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/bitkiler/'),
-        headers: headers,
-      ).timeout(const Duration(seconds: 10));
-
+      final response = await http.get(Uri.parse('$baseUrl/bitkiler/'));
+      
       if (response.statusCode == 200) {
         final List<dynamic> data = json.decode(response.body);
         return data.map((json) => Bitki.fromJson(json)).toList();
       } else {
-        throw Exception('Bitkiler yüklenirken hata oluştu: ${response.statusCode}');
+        throw Exception('Bitkiler yüklenirken bir hata oluştu: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Bağlantı hatası: $e');
+      throw Exception('Bitkiler yüklenirken bir hata oluştu: $e');
+    }
+  }
+
+  Future<Bitki> getBitkiDetay(int id) async {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/bitkiler/$id/'));
+      
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        return Bitki.fromJson(data);
+      } else {
+        throw Exception('Bitki detayı yüklenirken bir hata oluştu: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Bitki detayı yüklenirken bir hata oluştu: $e');
     }
   }
 
   Future<Bitki> getBitkiDetail(int id) async {
     try {
-      final headers = await _getHeaders();
-      final response = await http.get(
-        Uri.parse('$baseUrl/bitkiler/$id/'),
-        headers: headers,
-      ).timeout(const Duration(seconds: 10));
-
+      final response = await http.get(Uri.parse('$baseUrl/bitkiler/$id/'));
+      
       if (response.statusCode == 200) {
-        return Bitki.fromJson(json.decode(response.body));
+        final data = json.decode(response.body);
+        return Bitki.fromJson(data);
       } else {
-        throw Exception('Bitki detayı yüklenirken hata oluştu: ${response.statusCode}');
+        throw Exception('Bitki detayı yüklenirken bir hata oluştu: ${response.statusCode}');
       }
     } catch (e) {
-      throw Exception('Bağlantı hatası: $e');
+      throw Exception('Bitki detayı yüklenirken bir hata oluştu: $e');
     }
   }
 

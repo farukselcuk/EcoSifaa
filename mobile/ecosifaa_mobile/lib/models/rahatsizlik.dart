@@ -1,39 +1,43 @@
 class Rahatsizlik {
   final int id;
-  final String isim;
+  final String ad;
   final String aciklama;
-  final String? belirtiler;
-  final String? riskFaktorleri;
-  final String? onlemler;
+  final List<String> belirtiler;
+  final List<String> riskFaktorleri;
+  final List<String> onlemler;
+  final List<int> onerilenBitkiler;
 
   Rahatsizlik({
     required this.id,
-    required this.isim,
+    required this.ad,
     required this.aciklama,
-    this.belirtiler,
-    this.riskFaktorleri,
-    this.onlemler,
+    required this.belirtiler,
+    required this.riskFaktorleri,
+    required this.onlemler,
+    required this.onerilenBitkiler,
   });
 
   factory Rahatsizlik.fromJson(Map<String, dynamic> json) {
     return Rahatsizlik(
-      id: json['id'],
-      isim: json['isim'],
-      aciklama: json['aciklama'] ?? '',
-      belirtiler: json['belirtiler'],
-      riskFaktorleri: json['risk_faktorleri'],
-      onlemler: json['onlemler'],
+      id: json['id'] as int,
+      ad: json['ad'] as String,
+      aciklama: json['aciklama'] as String,
+      belirtiler: List<String>.from(json['belirtiler'] as List),
+      riskFaktorleri: List<String>.from(json['risk_faktorleri'] as List),
+      onlemler: List<String>.from(json['onlemler'] as List),
+      onerilenBitkiler: List<int>.from(json['onerilen_bitkiler'] as List),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'isim': isim,
+      'ad': ad,
       'aciklama': aciklama,
       'belirtiler': belirtiler,
       'risk_faktorleri': riskFaktorleri,
       'onlemler': onlemler,
+      'onerilen_bitkiler': onerilenBitkiler,
     };
   }
 } 
