@@ -1,12 +1,17 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../models/bitki.dart';
 import '../models/rahatsizlik.dart';
 
 class ApiService {
-  // Emülatör için localhost
-  final String baseUrl = 'http://localhost:8000/api';
+  // Web ve mobil platformlar için base URL belirleme
+  final String baseUrl = kIsWeb 
+      ? 'http://127.0.0.1:8000/api/v1'  // Web için
+      : 'http://10.0.2.2:8000/api/v1';   // Android emulator için
+  
   final storage = const FlutterSecureStorage();
 
   Future<String?> _getToken() async {
@@ -38,21 +43,6 @@ class ApiService {
   }
 
   Future<Bitki> getBitkiDetay(int id) async {
-    try {
-      final response = await http.get(Uri.parse('$baseUrl/bitkiler/$id/'));
-      
-      if (response.statusCode == 200) {
-        final data = json.decode(response.body);
-        return Bitki.fromJson(data);
-      } else {
-        throw Exception('Bitki detayı yüklenirken bir hata oluştu: ${response.statusCode}');
-      }
-    } catch (e) {
-      throw Exception('Bitki detayı yüklenirken bir hata oluştu: $e');
-    }
-  }
-
-  Future<Bitki> getBitkiDetail(int id) async {
     try {
       final response = await http.get(Uri.parse('$baseUrl/bitkiler/$id/'));
       
@@ -132,21 +122,33 @@ class ApiService {
     try {
       final response = await http.post(
         Uri.parse('$baseUrl/token/'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
         body: json.encode({
           'username': username,
           'password': password,
         }),
-      ).timeout(const Duration(seconds: 10));
+      ).timeout(
+        const Duration(seconds: 30),
+        onTimeout: () {
+          throw TimeoutException('Bağlantı zaman aşımına uğradı. Lütfen internet bağlantınızı kontrol edin.');
+        },
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         await storage.write(key: 'access_token', value: data['access']);
         await storage.write(key: 'refresh_token', value: data['refresh']);
         return true;
+      } else if (response.statusCode == 401) {
+        throw Exception('Kullanıcı adı veya şifre hatalı.');
       } else {
-        return false;
+        throw Exception('Giriş yapılırken bir hata oluştu: ${response.statusCode}');
       }
+    } on TimeoutException catch (e) {
+      throw Exception('Bağlantı zaman aşımına uğradı: $e');
     } catch (e) {
       throw Exception('Bağlantı hatası: $e');
     }

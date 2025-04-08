@@ -1,4 +1,5 @@
 class Bitki {
+  final int id;
   final String ad;
   final String bilimselAd;
   final String tip;
@@ -9,6 +10,7 @@ class Bitki {
   final List<String> uyarilar;
 
   Bitki({
+    required this.id,
     required this.ad,
     required this.bilimselAd,
     required this.tip,
@@ -21,6 +23,7 @@ class Bitki {
 
   factory Bitki.fromJson(Map<String, dynamic> json) {
     return Bitki(
+      id: json['id'] as int,
       ad: json['ad'] as String,
       bilimselAd: json['bilimsel_ad'] as String,
       tip: json['tip'] as String,
@@ -34,6 +37,7 @@ class Bitki {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'ad': ad,
       'bilimsel_ad': bilimselAd,
       'tip': tip,

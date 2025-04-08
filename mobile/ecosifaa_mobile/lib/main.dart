@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:ecosifaa_mobile/screens/home_screen.dart';
 import 'package:ecosifaa_mobile/providers/bitki_provider.dart';
 import 'package:ecosifaa_mobile/providers/rahatsizlik_provider.dart';
+import 'package:ecosifaa_mobile/providers/theme_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,16 +21,17 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => BitkiProvider()),
         ChangeNotifierProvider(create: (_) => RahatsizlikProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
-      child: MaterialApp(
-        title: 'EcoSifaa',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-          fontFamily: 'Roboto',
-          useMaterial3: true,
-        ),
-        home: const HomeScreen(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return MaterialApp(
+            title: 'EcoSifaa',
+            debugShowCheckedModeBanner: false,
+            theme: themeProvider.themeData,
+            home: const HomeScreen(),
+          );
+        },
       ),
     );
   }

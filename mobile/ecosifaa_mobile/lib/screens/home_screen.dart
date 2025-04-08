@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ecosifaa_mobile/screens/rahatsizliklar_screen.dart';
 import 'package:ecosifaa_mobile/screens/tedavi_oneri_screen.dart';
+import 'package:ecosifaa_mobile/screens/bitki_detay_screen.dart';
+import 'package:ecosifaa_mobile/screens/profile_screen.dart';
 import 'package:ecosifaa_mobile/widgets/bitki_card.dart';
 import 'package:ecosifaa_mobile/api/api_service.dart';
 import 'package:ecosifaa_mobile/models/bitki.dart';
@@ -15,8 +17,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final ApiService _apiService = ApiService();
   List<Bitki> _bitkiler = [];
+  List<Bitki> _filteredBitkiler = [];
   bool _isLoading = true;
   String _error = '';
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -24,11 +28,18 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadBitkiler();
   }
 
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Future<void> _loadBitkiler() async {
     try {
       final bitkiler = await _apiService.getBitkiler();
       setState(() {
         _bitkiler = bitkiler;
+        _filteredBitkiler = bitkiler;
         _isLoading = false;
       });
     } catch (e) {
@@ -37,6 +48,20 @@ class _HomeScreenState extends State<HomeScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  void _filterBitkiler(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        _filteredBitkiler = _bitkiler;
+      } else {
+        _filteredBitkiler = _bitkiler
+            .where((bitki) =>
+                bitki.ad.toLowerCase().contains(query.toLowerCase()) ||
+                bitki.bilimselAd.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -49,6 +74,17 @@ class _HomeScreenState extends State<HomeScreen> {
             expandedHeight: 200.0,
             floating: false,
             pinned: true,
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                  );
+                },
+              ),
+            ],
             flexibleSpace: FlexibleSpaceBar(
               title: const Text('EcoSifaa'),
               background: Container(
@@ -84,14 +120,33 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-          // Ana İçerik
+          // Arama Çubuğu
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                controller: _searchController,
+                onChanged: _filterBitkiler,
+                decoration: InputDecoration(
+                  hintText: 'Bitki ara...',
+                  prefixIcon: const Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  filled: true,
+                  fillColor: Theme.of(context).cardColor,
+                ),
+              ),
+            ),
+          ),
+
+          // Hızlı Erişim Kartları
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Hızlı Erişim Kartları
                   const Text(
                     'Hızlı Erişim',
                     style: TextStyle(
@@ -133,18 +188,20 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
-
-                  // Popüler Bitkiler
-                  const Text(
-                    'Popüler Bitkiler',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
                 ],
+              ),
+            ),
+          ),
+
+          const SliverToBoxAdapter(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Şifalı Bitkiler',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
@@ -171,6 +228,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             )
+          else if (_filteredBitkiler.isEmpty)
+            const SliverToBoxAdapter(
+              child: Center(
+                child: Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: Text(
+                    'Aradığınız kriterlere uygun bitki bulunamadı.',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+            )
           else
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -183,15 +252,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    final bitki = _bitkiler[index];
+                    final bitki = _filteredBitkiler[index];
                     return BitkiCard(
                       bitki: bitki,
                       onTap: () {
-                        // TODO: Bitki detay sayfasına yönlendir
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BitkiDetayScreen(id: bitki.id),
+                          ),
+                        );
                       },
                     );
                   },
-                  childCount: _bitkiler.length,
+                  childCount: _filteredBitkiler.length,
                 ),
               ),
             ),

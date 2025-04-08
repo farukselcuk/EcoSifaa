@@ -8,16 +8,16 @@ class BitkiProvider with ChangeNotifier {
   List<Bitki> _bitkiler = [];
   Bitki? _seciliBitki;
   bool _isLoading = false;
-  String _error = '';
+  String? _error;
 
   List<Bitki> get bitkiler => _bitkiler;
   Bitki? get seciliBitki => _seciliBitki;
   bool get isLoading => _isLoading;
-  String get error => _error;
+  String? get error => _error;
 
   Future<void> loadBitkiler() async {
     _isLoading = true;
-    _error = '';
+    _error = null;
     notifyListeners();
 
     try {
@@ -30,9 +30,25 @@ class BitkiProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Bitki> getBitkiDetail(int id) async {
+  Future<void> fetchBitkiDetail(int id) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
+
     try {
-      return await _apiService.getBitkiDetail(id);
+      _seciliBitki = await _apiService.getBitkiDetay(id);
+    } catch (e) {
+      _error = e.toString();
+      _seciliBitki = null;
+    }
+
+    _isLoading = false;
+    notifyListeners();
+  }
+  
+  Future<Bitki> getBitkiDetay(int id) async {
+    try {
+      return await _apiService.getBitkiDetay(id);
     } catch (e) {
       throw Exception('Bitki detayı yüklenirken bir hata oluştu: $e');
     }
