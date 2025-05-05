@@ -58,6 +58,19 @@
             <a href="tedavi-onerisi.html" class="nav-item">Tedavi Önerisi</a>
             <a href="tedavi-programlari.html" class="nav-item">Tedavi Programları</a>
             <a href="hastalik-arama.html" class="nav-item">Hastalık Ara</a>
+            <div class="user-menu">
+                <button id="loginButton" class="nav-item" style="background: none; border: none; color: white; cursor: pointer;">
+                    <i class="bi bi-person-circle"></i> Giriş Yap
+                </button>
+                <div id="userDropdown" class="user-dropdown" style="display: none;">
+                    <div class="user-info">
+                        <img id="userPhoto" src="" alt="Profil Fotoğrafı" style="width: 40px; height: 40px; border-radius: 50%;">
+                        <span id="userName"></span>
+                    </div>
+                    <a href="/admin" id="adminLink" style="display: none;">Admin Paneli</a>
+                    <a href="/logout" class="logout-btn">Çıkış Yap</a>
+                </div>
+            </div>
         </div>
     </header>
     <div class="container">

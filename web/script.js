@@ -33,6 +33,55 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // PWA kurulum
     setupPWA();
+
+    // Kullanıcı Girişi ve Oturum Yönetimi
+    const loginButton = document.getElementById('loginButton');
+    const userDropdown = document.getElementById('userDropdown');
+    const userPhoto = document.getElementById('userPhoto');
+    const userName = document.getElementById('userName');
+    const adminLink = document.getElementById('adminLink');
+
+    // Kullanıcı oturum durumunu kontrol et
+    fetch('/api/user')
+        .then(response => response.json())
+        .then(data => {
+            if (data.isAuthenticated) {
+                updateUserUI(data.user);
+            }
+        })
+        .catch(error => console.error('Kullanıcı bilgisi alınamadı:', error));
+
+    // Giriş butonu tıklama olayı
+    loginButton.addEventListener('click', () => {
+        window.location.href = '/auth/google';
+    });
+
+    // Kullanıcı arayüzünü güncelle
+    function updateUserUI(user) {
+        if (user) {
+            loginButton.style.display = 'none';
+            userDropdown.style.display = 'block';
+            userPhoto.src = user.photo;
+            userName.textContent = user.displayName;
+            
+            if (user.isAdmin) {
+                adminLink.style.display = 'block';
+            }
+        } else {
+            loginButton.style.display = 'block';
+            userDropdown.style.display = 'none';
+        }
+    }
+
+    // Çıkış yapma işlemi
+    document.querySelector('.logout-btn')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        fetch('/logout', { method: 'GET' })
+            .then(() => {
+                window.location.href = '/';
+            })
+            .catch(error => console.error('Çıkış yapılamadı:', error));
+    });
 });
 
 // Login formlarını ayarla

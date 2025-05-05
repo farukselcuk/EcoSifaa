@@ -71,10 +71,43 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Admin paneli yönlendirmesi
-app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'admin-panel.html'));
+// Kullanıcı bilgilerini döndür
+app.get('/api/user', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.json({
+            isAuthenticated: true,
+            user: {
+                id: req.user.id,
+                displayName: req.user.displayName,
+                email: req.user.email,
+                photo: req.user.photo,
+                isAdmin: req.user.isAdmin
+            }
+        });
+    } else {
+        res.json({ isAuthenticated: false });
+    }
 });
+
+// Admin paneli için yetkilendirme kontrolü
+app.get('/admin', isAuthenticated, isAdmin, (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin-panel.html'));
+});
+
+// Yetkilendirme middleware'leri
+function isAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/');
+}
+
+function isAdmin(req, res, next) {
+    if (req.user && req.user.isAdmin) {
+        return next();
+    }
+    res.redirect('/');
+}
 
 // 404 sayfası
 app.use((req, res) => {

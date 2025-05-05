@@ -1,15 +1,11 @@
-from django.urls import path
-from . import views
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .presentation.views import BitkiViewSet, RahatsizlikViewSet
+
+router = DefaultRouter()
+router.register(r'bitkiler', BitkiViewSet, basename='bitki')
+router.register(r'rahatsizliklar', RahatsizlikViewSet, basename='rahatsizlik')
 
 urlpatterns = [
-    path('', views.home, name='home'),
-    path('bitkiler/', views.bitki_listesi, name='bitki_listesi'),
-    path('bitki/<int:pk>/', views.bitki_detay, name='bitki_detay'),
-    path('bitki/ekle/', views.bitki_ekle, name='bitki_ekle'),
-    path('bitki/<int:pk>/duzenle/', views.bitki_duzenle, name='bitki_duzenle'),
-    path('bitki/<int:pk>/sil/', views.bitki_sil, name='bitki_sil'),
-    path('tedavi/', views.tedavi_form, name='tedavi_form'),
-    path('tedavi/oneri/', views.tedavi_form, name='tedavi_oneri'),
-    path('search/', views.search_bitkiler, name='search_bitkiler'),
-    path('rahatsizliklar/', views.rahatsizlik_listesi, name='rahatsizlik_listesi'),
+    path('', include(router.urls)),
 ] 
