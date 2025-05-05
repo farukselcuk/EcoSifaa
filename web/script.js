@@ -1,3 +1,25 @@
+// CSS Renk Düzeltme - Mavi -> Yeşil
+(function() {
+    // Depolanan düzeltme varsa uygula
+    const storedFix = localStorage.getItem('ecosifaa-css-fix');
+    if (storedFix) {
+        const style = document.createElement('style');
+        style.id = 'ecosifaa-fix';
+        style.textContent = storedFix;
+        
+        // Sayfa yüklendiğinde ya da DOMContentLoaded'da ekle
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                document.head.appendChild(style);
+                console.log('EcoSifaa CSS düzeltmesi uygulandı');
+            });
+        } else {
+            document.head.appendChild(style);
+            console.log('EcoSifaa CSS düzeltmesi uygulandı');
+        }
+    }
+})();
+
 // API URL
 const API_BASE_URL = 'http://localhost:8000/api';
 
@@ -5,7 +27,213 @@ const API_BASE_URL = 'http://localhost:8000/api';
 document.addEventListener('DOMContentLoaded', function() {
     // Popüler bitkileri yükle
     fetchPopularPlants();
+    
+    // Login formlarını dinle
+    setupLoginForms();
+    
+    // PWA kurulum
+    setupPWA();
 });
+
+// Login formlarını ayarla
+function setupLoginForms() {
+    const userLoginForm = document.getElementById('userLoginForm');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const googleLoginBtn = document.querySelector('.btn-google');
+    
+    if (userLoginForm) {
+        userLoginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = document.getElementById('userEmail').value;
+            const password = document.getElementById('userPassword').value;
+            
+            // Normalde burada API'ye istek yapılır
+            console.log('Kullanıcı girişi:', email, password);
+            
+            // Demo amaçlı basit kontrol
+            if (email && password) {
+                alert('Başarıyla giriş yaptınız!');
+                localStorage.setItem('userLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
+                updateLoginStatus();
+                
+                // Modal'ı kapat
+                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                loginModal.hide();
+            }
+        });
+    }
+    
+    if (adminLoginForm) {
+        adminLoginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+            
+            // Demo amaçlı basit admin kontrolü
+            if (username === 'admin' && password === 'admin123') {
+                alert('Admin olarak giriş yaptınız!');
+                localStorage.setItem('adminLoggedIn', 'true');
+                localStorage.setItem('adminUsername', username);
+                updateLoginStatus();
+                
+                // Admin paneline yönlendir
+                window.location.href = 'admin-panel.html';
+                
+                // Modal'ı kapat
+                const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+                loginModal.hide();
+            } else {
+                alert('Hatalı admin bilgileri!');
+            }
+        });
+    }
+    
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Google ile giriş demo
+            simulateGoogleLogin();
+        });
+    }
+    
+    // Sayfa yüklendiğinde giriş durumunu kontrol et
+    updateLoginStatus();
+}
+
+// Giriş durumunu güncelle
+function updateLoginStatus() {
+    const userLoggedIn = localStorage.getItem('userLoggedIn') === 'true';
+    const adminLoggedIn = localStorage.getItem('adminLoggedIn') === 'true';
+    
+    const loginBtn = document.querySelector('.btn-user-action');
+    
+    if (loginBtn) {
+        if (userLoggedIn) {
+            const userEmail = localStorage.getItem('userEmail');
+            loginBtn.innerHTML = `<i class="bi bi-person-check-fill"></i> ${userEmail.split('@')[0]}`;
+            loginBtn.setAttribute('data-bs-target', '#userDropdown');
+        } else if (adminLoggedIn) {
+            const adminUsername = localStorage.getItem('adminUsername');
+            loginBtn.innerHTML = `<i class="bi bi-shield-lock-fill"></i> ${adminUsername}`;
+            loginBtn.setAttribute('data-bs-target', '#adminDropdown');
+        } else {
+            loginBtn.innerHTML = `<i class="bi bi-person-circle"></i> Giriş Yap`;
+            loginBtn.setAttribute('data-bs-target', '#loginModal');
+        }
+    }
+}
+
+// Google ile giriş simülasyonu
+function simulateGoogleLogin() {
+    // Gerçek bir uygulamada burada Google OAuth kullanılır
+    console.log('Google ile giriş yapılıyor...');
+    
+    setTimeout(() => {
+        const randomUser = `user${Math.floor(Math.random() * 1000)}@gmail.com`;
+        localStorage.setItem('userLoggedIn', 'true');
+        localStorage.setItem('userEmail', randomUser);
+        localStorage.setItem('loginMethod', 'google');
+        
+        updateLoginStatus();
+        alert(`Google hesabı ile giriş yapıldı: ${randomUser}`);
+        
+        // Modal'ı kapat
+        const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+        loginModal.hide();
+    }, 1000);
+}
+
+// Çıkış yap
+function logout() {
+    localStorage.removeItem('userLoggedIn');
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('adminLoggedIn');
+    localStorage.removeItem('adminUsername');
+    localStorage.removeItem('loginMethod');
+    
+    updateLoginStatus();
+    alert('Başarıyla çıkış yaptınız!');
+}
+
+// PWA kurulum işlevini ayarla
+function setupPWA() {
+    let deferredPrompt;
+    const installPrompt = document.getElementById('install-prompt');
+    const installButton = document.getElementById('install-button');
+    const closePrompt = document.getElementById('close-prompt');
+    
+    // Service Worker kayıt
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker başarıyla kaydedildi:', registration.scope);
+                })
+                .catch(error => {
+                    console.error('ServiceWorker kaydı başarısız:', error);
+                });
+        });
+    } else {
+        console.warn('Service worker bu tarayıcıda desteklenmiyor.');
+    }
+    
+    // PWA kurulum bildirimini göster
+    window.addEventListener('beforeinstallprompt', (e) => {
+        console.log('PWA kurulum bildirimi tetiklendi');
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // Kurulum bildirimi varsa göster
+        if (installPrompt) {
+            installPrompt.style.display = 'block';
+        }
+    });
+    
+    // Kurulum butonunu ayarla
+    if (installButton) {
+        installButton.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                console.log('Kurulum isteği bulunamadı');
+                return;
+            }
+            
+            console.log('Kurulum isteği gösteriliyor');
+            deferredPrompt.prompt();
+            
+            // Kullanıcı yanıtını bekle
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`Kullanıcı kurulumu ${outcome === 'accepted' ? 'kabul etti' : 'reddetti'}`);
+            
+            // prompt'u sıfırla
+            deferredPrompt = null;
+            
+            // Bildirimi gizle
+            if (installPrompt) {
+                installPrompt.style.display = 'none';
+            }
+        });
+    }
+    
+    // Kapat butonunu ayarla
+    if (closePrompt) {
+        closePrompt.addEventListener('click', () => {
+            if (installPrompt) {
+                installPrompt.style.display = 'none';
+            }
+        });
+    }
+    
+    // PWA kurulumunun tamamlandığını kontrol et
+    window.addEventListener('appinstalled', (e) => {
+        console.log('PWA başarıyla kuruldu');
+        // Bildirimi gizle
+        if (installPrompt) {
+            installPrompt.style.display = 'none';
+        }
+    });
+}
 
 // Popüler bitkileri getir
 async function fetchPopularPlants() {

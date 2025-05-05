@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rahatsızlıklar - EcoSifaa</title>
+    <link rel="stylesheet" href="styles.css?v=2023052401">
+    <link rel="stylesheet" href="renk-duzelt.css?v=2023052401">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f5f5f5; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 16px; }
+        .page-title { color: #2eae36; font-size: 2rem; margin: 24px 0 32px; text-align: center; }
+        .search-bar { display: flex; margin: 0 auto 32px; max-width: 500px; }
+        .search-input { flex: 1; padding: 12px 15px; border: 1px solid #ddd; border-radius: 30px 0 0 30px; font-size: 16px; }
+        .search-button { background: #2eae36; color: #fff; border: none; padding: 12px 25px; border-radius: 0 30px 30px 0; cursor: pointer; font-weight: bold; }
+        .categories { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 32px; }
+        .category { background: #fff; padding: 8px 18px; border-radius: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.07); transition: all 0.3s; font-size: 15px; }
+        .category.active, .category:hover { background: #2eae36; color: #fff; }
+        .illnesses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 24px; margin-top: 24px; }
+        .illness-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(46,174,54,0.07); transition: transform 0.3s; }
+        .illness-card:hover { transform: translateY(-5px); }
+        .illness-info { padding: 20px; }
+        .illness-name { font-size: 18px; font-weight: bold; margin-bottom: 10px; color: #2eae36; }
+        .illness-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+        .illness-tag { background: #e8f5e9; color: #2e7d32; font-size: 12px; padding: 5px 10px; border-radius: 15px; }
+        .illness-description { color: #666; font-size: 14px; line-height: 1.5; margin-bottom: 10px; }
+        .view-details { color: #2eae36; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block; padding: 8px 0; }
+        .pagination { display: flex; justify-content: center; margin: 40px 0 0; gap: 10px; }
+        .page-number { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #fff; color: #333; text-decoration: none; box-shadow: 0 2px 5px rgba(0,0,0,0.07); }
+        .page-number.active { background: #2eae36; color: #fff; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo"><i class="bi bi-tree-fill"></i> EcoSifaa</div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item">Ana Sayfa</a>
+            <a href="bitkiler.html" class="nav-item">Şifalı Bitkiler</a>
+            <a href="rahatsizliklar.html" class="nav-item">Rahatsızlıklar</a>
+            <a href="tedavi-onerisi.html" class="nav-item">Tedavi Önerisi</a>
+            <a href="tedavi-programlari.html" class="nav-item">Tedavi Programları</a>
+            <a href="hastalik-arama.html" class="nav-item">Hastalık Ara</a>
+        </div>
+    </header>
+    <div class="container">
+        <h1 class="page-title">Rahatsızlıklar</h1>
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="Rahatsızlık veya bitki ara...">
+            <button class="search-button">Ara</button>
+        </div>
+        <div class="categories">
+            <div class="category active">Tümü</div>
+            <div class="category">Sindirim</div>
+            <div class="category">Bağışıklık</div>
+            <div class="category">Cilt Sağlığı</div>
+            <div class="category">Uyku ve Stres</div>
+            <div class="category">Ağrı</div>
+            <div class="category">Solunum</div>
+            <div class="category">Detoks</div>
+        </div>
+        <div class="illnesses-grid">
+            <div class="illness-card">
+                <div class="illness-info">
+                    <h3 class="illness-name">Soğuk Algınlığı</h3>
+                    <div class="illness-tags">
+                        <span class="illness-tag">Bağışıklık</span>
+                        <span class="illness-tag">Solunum</span>
+                    </div>
+                    <p class="illness-description">Burun akıntısı, boğaz ağrısı ve hafif ateş ile seyreden yaygın bir üst solunum yolu enfeksiyonudur.</p>
+                    <a href="#" class="view-details">Detaylı Bilgi</a>
+                </div>
+            </div>
+            <div class="illness-card">
+                <div class="illness-info">
+                    <h3 class="illness-name">Bağışıklık Zayıflığı</h3>
+                    <div class="illness-tags">
+                        <span class="illness-tag">Bağışıklık</span>
+                    </div>
+                    <p class="illness-description">Vücudun hastalıklara karşı savunma mekanizmasının zayıflaması durumudur.</p>
+                    <a href="#" class="view-details">Detaylı Bilgi</a>
+                </div>
+            </div>
+            <div class="illness-card">
+                <div class="illness-info">
+                    <h3 class="illness-name">Sindirim Problemleri</h3>
+                    <div class="illness-tags">
+                        <span class="illness-tag">Sindirim</span>
+                    </div>
+                    <p class="illness-description">Mide bulantısı, hazımsızlık, şişkinlik gibi sindirim sistemiyle ilgili rahatsızlıklar.</p>
+                    <a href="#" class="view-details">Detaylı Bilgi</a>
+                </div>
+            </div>
+            <div class="illness-card">
+                <div class="illness-info">
+                    <h3 class="illness-name">Cilt Problemleri</h3>
+                    <div class="illness-tags">
+                        <span class="illness-tag">Cilt Sağlığı</span>
+                    </div>
+                    <p class="illness-description">Akne, egzama, kuruluk gibi ciltle ilgili yaygın rahatsızlıklar.</p>
+                    <a href="#" class="view-details">Detaylı Bilgi</a>
+                </div>
+            </div>
+            <div class="illness-card">
+                <div class="illness-info">
+                    <h3 class="illness-name">Stres ve Uykusuzluk</h3>
+                    <div class="illness-tags">
+                        <span class="illness-tag">Uyku ve Stres</span>
+                    </div>
+                    <p class="illness-description">Günlük yaşamda karşılaşılan stres ve uykuya dalma güçlüğü gibi durumlar.</p>
+                    <a href="#" class="view-details">Detaylı Bilgi</a>
+                </div>
+            </div>
+        </div>
+        <div class="pagination">
+            <a href="#" class="page-number active">1</a>
+            <a href="#" class="page-number">2</a>
+            <a href="#" class="page-number">3</a>
+        </div>
+    </div>
+    <!-- FOOTER -->
+    <footer style="background: #2eae36; padding: 28px 0; margin-top: 40px; border-top: 2px solid #2eae36;">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #fff; margin-bottom: 16px;">Hakkımızda</h3>
+                <p style="color: #e6ffe6; font-size: 15px; line-height: 1.7;">EcoSifaa, şifalı bitkiler ve doğal tedavi yöntemleri hakkında güvenilir ve güncel bilgiler sunan bir platformdur. Amacımız, doğanın sunduğu şifayı herkes için ulaşılabilir kılmak ve sağlıklı yaşamı desteklemektir.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #fff; margin-bottom: 16px;">İletişim</h3>
+                <p style="color: #e6ffe6; font-size: 15px; line-height: 1.7;">
+                    E-posta: <a href="mailto:info@ecosifaa.com" style="color: #fff; text-decoration: underline;">info@ecosifaa.com</a><br>
+                    Telefon: <a href="tel:+905551112233" style="color: #fff; text-decoration: underline;">+90 555 111 22 33</a><br>
+                    Adres: İstanbul, Türkiye
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; color: #e6ffe6; font-size: 13px; margin-top: 24px;">&copy; 2024 EcoSifaa. Tüm hakları saklıdır.</div>
+    </footer>
+</body>
+</html> 

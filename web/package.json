@@ -1,0 +1,21 @@
+{
+  "name": "ecosifaa-web",
+  "version": "1.0.0",
+  "description": "EcoSifaa - Şifalı Bitkiler Veritabanı Web Arayüzü",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "ecosifaa",
+    "bitkiler",
+    "şifalı bitkiler",
+    "medicinal plants"
+  ],
+  "author": "EcoSifaa",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

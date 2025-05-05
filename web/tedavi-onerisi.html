@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSifaa - Tedavi Önerisi</title>
+    <link rel="stylesheet" href="styles.css?v=2023052401">
+    <link rel="stylesheet" href="renk-duzelt.css?v=2023052401">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f5f5f5; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 16px; }
+        .page-title { color: #2eae36; font-size: 2rem; margin: 24px 0 12px; text-align: center; }
+        .page-description { text-align: center; max-width: 700px; margin: 0 auto 30px; color: #666; line-height: 1.6; }
+        .search-section { background: #fff; border-radius: 15px; padding: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.07); margin-bottom: 40px; }
+        .search-title { font-size: 20px; margin-bottom: 20px; color: #2eae36; }
+        .search-form { display: flex; flex-direction: column; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 10px; }
+        .form-label { font-weight: bold; color: #555; }
+        .form-input { padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .symptom-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+        .symptom-tag { background: #e8f5e9; color: #2e7d32; padding: 8px 15px; border-radius: 20px; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+        .remove-tag { cursor: pointer; color: #2e7d32; font-weight: bold; }
+        .body-map { display: flex; justify-content: center; margin: 20px 0; }
+        .body-image { max-width: 300px; height: auto; }
+        .common-symptoms { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .symptom-pill { background: #f0f0f0; padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: all 0.2s; font-size: 14px; }
+        .symptom-pill:hover { background: #e0e0e0; }
+        .age-gender { display: flex; gap: 20px; }
+        .age-gender > div { flex: 1; }
+        .search-button { background: #2eae36; color: #fff; border: none; padding: 15px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-top: 10px; }
+        .search-button:hover { background: #249b2d; }
+        .results-section { margin-top: 40px; }
+        .results-title { font-size: 22px; margin-bottom: 20px; color: #2eae36; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .treatment-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 3px 10px rgba(0,0,0,0.07); margin-bottom: 25px; display: flex; }
+        .treatment-image { width: 200px; object-fit: cover; }
+        .treatment-content { padding: 20px; flex: 1; }
+        .treatment-condition { font-size: 20px; font-weight: bold; margin-bottom: 10px; color: #2eae36; }
+        .treatment-description { color: #666; margin-bottom: 15px; line-height: 1.6; }
+        .treatment-herbs { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
+        .herb-pill { background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 15px; font-size: 14px; }
+        .view-treatment { color: #2eae36; text-decoration: none; font-weight: bold; padding: 8px 0; display: inline-block; }
+        .disclaimer { background: #fff3e0; padding: 15px; border-radius: 8px; margin: 40px 0; border-left: 4px solid #ff9800; }
+        .disclaimer-title { color: #e65100; margin-bottom: 10px; font-weight: bold; }
+        .disclaimer-text { color: #666; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo"><i class="bi bi-tree-fill"></i> EcoSifaa</div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item">Ana Sayfa</a>
+            <a href="bitkiler.html" class="nav-item">Şifalı Bitkiler</a>
+            <a href="rahatsizliklar.html" class="nav-item">Rahatsızlıklar</a>
+            <a href="tedavi-onerisi.html" class="nav-item">Tedavi Önerisi</a>
+            <a href="tedavi-programlari.html" class="nav-item">Tedavi Programları</a>
+            <a href="hastalik-arama.html" class="nav-item">Hastalık Ara</a>
+        </div>
+    </header>
+    <div class="container">
+        <h1 class="page-title">Semptom Analizi ve Doğal Tedavi Önerileri</h1>
+        <p class="page-description">Yaşadığınız semptomları girerek size özel bitkisel tedavi önerilerini keşfedin. Hafif rahatsızlıklar için hastane yoğunluğunu azaltmaya yardımcı oluyoruz.</p>
+        <div class="search-section">
+            <h2 class="search-title">Semptomlarınızı Belirtin</h2>
+            <form class="search-form">
+                <div class="form-group">
+                    <label class="form-label">Hissettiğiniz semptomlar neler?</label>
+                    <input type="text" class="form-input" placeholder="Örn: baş ağrısı, mide bulantısı, öksürük...">
+                    <div class="symptom-tags">
+                        <div class="symptom-tag">Boğaz ağrısı <span class="remove-tag">✕</span></div>
+                        <div class="symptom-tag">Hafif öksürük <span class="remove-tag">✕</span></div>
+                    </div>
+                    <div class="common-symptoms">
+                        <div class="symptom-pill">Baş ağrısı</div>
+                        <div class="symptom-pill">Mide bulantısı</div>
+                        <div class="symptom-pill">Halsizlik</div>
+                        <div class="symptom-pill">Ateş</div>
+                        <div class="symptom-pill">Öksürük</div>
+                        <div class="symptom-pill">Eklem ağrısı</div>
+                        <div class="symptom-pill">Uykusuzluk</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vücudunuzda hangi bölgede rahatsızlık hissediyorsunuz?</label>
+                    <div class="body-map">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=300&q=80" alt="Vücut Haritası" class="body-image">
+                    </div>
+                </div>
+                <div class="age-gender">
+                    <div class="form-group">
+                        <label class="form-label">Yaş</label>
+                        <input type="number" class="form-input" placeholder="Yaşınız">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Cinsiyet</label>
+                        <select class="form-input">
+                            <option value="">Seçiniz</option>
+                            <option value="male">Erkek</option>
+                            <option value="female">Kadın</option>
+                            <option value="other">Diğer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Semptomlar ne kadar süredir devam ediyor?</label>
+                    <select class="form-input">
+                        <option value="">Seçiniz</option>
+                        <option value="today">Bugün başladı</option>
+                        <option value="days">Birkaç gündür</option>
+                        <option value="week">Bir haftadır</option>
+                        <option value="weeks">Birkaç haftadır</option>
+                        <option value="month">Bir aydır veya daha uzun süredir</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-button">Doğal Tedavi Önerilerini Göster</button>
+            </form>
+        </div>
+        <div class="results-section">
+            <h2 class="results-title">Önerilen Doğal Tedaviler</h2>
+            <div class="treatment-card">
+                <img src="https://images.unsplash.com/photo-1465101178521-c1a9136a3fd9?auto=format&fit=crop&w=200&q=80" alt="Soğuk Algınlığı" class="treatment-image">
+                <div class="treatment-content">
+                    <h3 class="treatment-condition">Hafif Üst Solunum Yolu Enfeksiyonu</h3>
+                    <p class="treatment-description">Belirttiğiniz semptomlar hafif bir üst solunum yolu enfeksiyonunu işaret ediyor olabilir. Şu bitkisel çözümler semptomlarınızı hafifletmeye yardımcı olabilir:</p>
+                    <div class="treatment-herbs">
+                        <span class="herb-pill">Ihlamur</span>
+                        <span class="herb-pill">Adaçayı</span>
+                        <span class="herb-pill">Zencefil</span>
+                        <span class="herb-pill">Ekinezya</span>
+                        <span class="herb-pill">Bal</span>
+                    </div>
+                    <a href="#" class="view-treatment">Detaylı Tedavi Programını Görüntüle</a>
+                </div>
+            </div>
+            <div class="treatment-card">
+                <img src="https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=200&q=80" alt="Stres ve Anksiyete" class="treatment-image">
+                <div class="treatment-content">
+                    <h3 class="treatment-condition">Gerginlik ve Strese Bağlı Boğaz Ağrısı</h3>
+                    <p class="treatment-description">Stres ve gerginlik boğaz bölgesinde kasılmalara ve ağrıya neden olabilir. Aşağıdaki bitkisel çözümler rahatlamanıza ve semptomların azalmasına yardımcı olabilir:</p>
+                    <div class="treatment-herbs">
+                        <span class="herb-pill">Papatya</span>
+                        <span class="herb-pill">Melisa</span>
+                        <span class="herb-pill">Lavanta</span>
+                        <span class="herb-pill">Limon Balsamı</span>
+                    </div>
+                    <a href="#" class="view-treatment">Detaylı Tedavi Programını Görüntüle</a>
+                </div>
+            </div>
+        </div>
+        <div class="disclaimer">
+            <h3 class="disclaimer-title">Önemli Sağlık Uyarısı</h3>
+            <p class="disclaimer-text">Bu uygulama yalnızca bilgilendirme amaçlıdır ve profesyonel tıbbi tavsiye, teşhis veya tedavi yerine geçmez. Şiddetli veya kalıcı semptomlar, nefes alma zorluğu, yüksek ateş veya başka ciddi belirtiler yaşıyorsanız derhal tıbbi yardım alınız. Bitkisel ürünler ilaçlarla etkileşime girebilir, bu nedenle herhangi bir tedaviye başlamadan önce doktorunuza danışınız.</p>
+        </div>
+    </div>
+    <!-- FOOTER -->
+    <footer style="background: #2eae36; padding: 28px 0; margin-top: 40px; border-top: 2px solid #2eae36;">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #fff; margin-bottom: 16px;">Hakkımızda</h3>
+                <p style="color: #e6ffe6; font-size: 15px; line-height: 1.7;">EcoSifaa, şifalı bitkiler ve doğal tedavi yöntemleri hakkında güvenilir ve güncel bilgiler sunan bir platformdur. Amacımız, doğanın sunduğu şifayı herkes için ulaşılabilir kılmak ve sağlıklı yaşamı desteklemektir.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #fff; margin-bottom: 16px;">İletişim</h3>
+                <p style="color: #e6ffe6; font-size: 15px; line-height: 1.7;">
+                    E-posta: <a href="mailto:info@ecosifaa.com" style="color: #fff; text-decoration: underline;">info@ecosifaa.com</a><br>
+                    Telefon: <a href="tel:+905551112233" style="color: #fff; text-decoration: underline;">+90 555 111 22 33</a><br>
+                    Adres: İstanbul, Türkiye
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; color: #e6ffe6; font-size: 13px; margin-top: 24px;">&copy; 2024 EcoSifaa. Tüm hakları saklıdır.</div>
+    </footer>
+</body>
+</html> 

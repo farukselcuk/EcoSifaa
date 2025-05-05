@@ -1,0 +1,109 @@
+/* 
+ * EcoSifaa Renk Düzeltme CSS
+ * Bu dosya mavi renkli alanları zorla yeşil yapmak için kullanılır
+ */
+
+:root {
+  --bs-primary: #2ecc71 !important;
+  --bs-primary-rgb: 46, 204, 113 !important;
+  --bs-secondary: #27ae60 !important;
+  --bs-secondary-rgb: 39, 174, 96 !important;
+  --bs-success: #2ecc71 !important;
+  --bs-success-rgb: 46, 204, 113 !important;
+  --bs-info: #1abc9c !important;
+  --bs-info-rgb: 26, 188, 156 !important;
+}
+
+.bg-primary {
+  background-color: #2ecc71 !important;
+}
+
+.bg-secondary {
+  background-color: #27ae60 !important;
+}
+
+.bg-success {
+  background-color: #2ecc71 !important;
+}
+
+.bg-info {
+  background-color: #1abc9c !important;
+}
+
+.text-primary {
+  color: #2ecc71 !important;
+}
+
+.text-secondary {
+  color: #27ae60 !important;
+}
+
+.text-success {
+  color: #2ecc71 !important;
+}
+
+.text-info {
+  color: #1abc9c !important;
+}
+
+.btn-primary {
+  background-color: #2ecc71 !important;
+  border-color: #2ecc71 !important;
+}
+
+.btn-primary:hover {
+  background-color: #27ae60 !important;
+  border-color: #27ae60 !important;
+}
+
+.btn-outline-primary {
+  color: #2ecc71 !important;
+  border-color: #2ecc71 !important;
+}
+
+.btn-outline-primary:hover {
+  background-color: #2ecc71 !important;
+  color: white !important;
+}
+
+.navbar {
+  background: linear-gradient(to right, #2ecc71, #1abc9c) !important;
+}
+
+.navbar-dark {
+  background: linear-gradient(to right, #2ecc71, #1abc9c) !important;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #2ecc71 0%, #1abc9c 100%) !important;
+}
+
+.list-group-item.active {
+  background: linear-gradient(to right, #2ecc71, #1abc9c) !important;
+  border-color: #2ecc71 !important;
+}
+
+/* Olası diğer mavi elementleri zorla yeşil yap */
+[style*="background-color: rgb(82, 113, 255)"],
+[style*="background-color: #5271ff"],
+[style*="background-color: blue"],
+[style*="background: rgb(82, 113, 255)"],
+[style*="background: #5271ff"],
+[style*="background: blue"] {
+  background: #2ecc71 !important;
+}
+
+/* Link hover ve aktif durumları */
+a:hover, a:active, a:focus {
+  color: #27ae60 !important;
+}
+
+/* Badge ve diğer renklendirilmiş elementler */
+.badge-primary, .label-primary {
+  background-color: #2ecc71 !important;
+}
+
+/* Mavi olabilecek diğer bootstrap bileşenleri */
+.progress-bar, .alert-primary, .alert-info {
+  background-color: #2ecc71 !important;
+} 
