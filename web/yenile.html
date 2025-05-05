@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSifaa - Yenileniyor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9f8;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .refresh-card {
+            max-width: 600px;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(46, 204, 113, 0.15);
+            border: none;
+            overflow: hidden;
+        }
+        .card-header {
+            background: linear-gradient(to right, #2ecc71, #1abc9c);
+            color: white;
+            border: none;
+            padding: 20px;
+        }
+        .progress-bar {
+            background: linear-gradient(to right, #2ecc71, #1abc9c);
+            height: 8px;
+            border-radius: 4px;
+        }
+        .btn-success {
+            background-color: #2ecc71;
+            border-color: #2ecc71;
+            border-radius: 50px;
+            padding: 10px 30px;
+            transition: all 0.4s;
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+            border-color: #27ae60;
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card refresh-card">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="bi bi-arrow-repeat me-2"></i> EcoSifaa Yenileniyor</h3>
+            </div>
+            <div class="card-body p-4">
+                <p class="mb-4">Tarayıcı önbelleği temizleniyor ve sayfalar yenileniyor. Lütfen bekleyin...</p>
+                
+                <div class="progress mb-4">
+                    <div id="progress-bar" class="progress-bar" role="progressbar" style="width: 10%;" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                
+                <div id="status-text" class="text-muted small mb-4">Önbellek temizleniyor...</div>
+                
+                <div id="completed-section" class="d-none">
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill me-2"></i> Yenileme işlemi tamamlandı!
+                    </div>
+                    
+                    <div class="d-grid gap-3">
+                        <a href="index.html" class="btn btn-success">Ana Sayfaya Git</a>
+                        <a href="admin-panel.html" class="btn btn-outline-secondary">Admin Paneline Git</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Önbelleği temizlemeye çalış 
+            clearCache();
+            
+            // Progress bar animasyonu
+            let progress = 10;
+            const progressBar = document.getElementById('progress-bar');
+            const statusText = document.getElementById('status-text');
+            const completedSection = document.getElementById('completed-section');
+            
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = progress + '%';
+                progressBar.setAttribute('aria-valuenow', progress);
+                
+                if (progress < 30) {
+                    statusText.textContent = 'Önbellek temizleniyor...';
+                } else if (progress < 60) {
+                    statusText.textContent = 'CSS dosyaları yenileniyor...';
+                } else if (progress < 90) {
+                    statusText.textContent = 'Sayfalar hazırlanıyor...';
+                } else {
+                    statusText.textContent = 'Tamamlandı';
+                }
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    completedSection.classList.remove('d-none');
+                }
+            }, 200);
+        });
+        
+        function clearCache() {
+            // Cache API'yi kullanarak önbelleği temizlemeye çalış
+            if ('caches' in window) {
+                caches.keys().then(function(cacheNames) {
+                    return Promise.all(
+                        cacheNames.map(function(cacheName) {
+                            return caches.delete(cacheName);
+                        })
+                    );
+                });
+            }
+            
+            // CSS dosyalarını zorla yeniden yükle
+            const stylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+            stylesheets.forEach(link => {
+                const url = new URL(link.href);
+                url.searchParams.set('t', Date.now());
+                link.href = url.toString();
+            });
+            
+            // LocalStorage'i temizle (CSS önbellek değerlerini içerebilir)
+            localStorage.removeItem('css_cache');
+        }
+    </script>
+</body>
+</html> 

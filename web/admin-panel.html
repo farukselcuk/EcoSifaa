@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSifaa - Admin Paneli</title>
+    
+    <!-- Önbellek Önleme Meta Etiketleri -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css?v=2023052302">
+    <link rel="stylesheet" href="admin.css?v=2023052302">
+    <link rel="stylesheet" href="renk-duzelt.css?v=2023052302">
+    
+    <!-- İlave Stil Düzeltmeleri -->
+    <style>
+        :root {
+          --bs-primary: #2ecc71 !important;
+          --bs-primary-rgb: 46, 204, 113 !important;
+          --bs-secondary: #27ae60 !important;
+          --bs-secondary-rgb: 39, 174, 96 !important;
+          --bs-success: #2ecc71 !important;
+          --bs-success-rgb: 46, 204, 113 !important;
+          --bs-info: #1abc9c !important;
+          --bs-info-rgb: 26, 188, 156 !important;
+        }
+        
+        .navbar-dark {
+          background: linear-gradient(to right, #2ecc71, #1abc9c) !important;
+        }
+        
+        .bg-primary, .text-bg-primary {
+          background-color: #2ecc71 !important;
+        }
+        
+        .text-primary {
+          color: #2ecc71 !important;
+        }
+        
+        .btn-primary {
+          background-color: #2ecc71 !important;
+          border-color: #2ecc71 !important;
+        }
+        
+        .btn-primary:hover {
+          background-color: #27ae60 !important;
+          border-color: #27ae60 !important;
+        }
+        
+        .list-group-item.active {
+          background: linear-gradient(to right, #2ecc71, #1abc9c) !important;
+          border-color: #2ecc71 !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background: linear-gradient(to right, #2ecc71, #1abc9c) !important; box-shadow: 0 2px 15px rgba(46, 204, 113, 0.15) !important;">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="bi bi-tree-fill me-2"></i> EcoSifaa
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Ana Sayfa</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/admin">Admin Paneli</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item me-2">
+                        <span class="nav-link btn-user-action" id="admin-username">
+                            <i class="bi bi-person-circle me-1"></i> Admin
+                        </span>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn-user-action" href="#" onclick="logout()">
+                            <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row g-4">
+            <!-- Sidebar -->
+            <div class="col-md-3 mb-4">
+                <div class="admin-sidebar p-3">
+                    <h5 class="panel-title mb-4 pb-3"><i class="bi bi-speedometer2"></i> Yönetim Paneli</h5>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action active" id="nav-bitkiler">
+                            <i class="bi bi-tree"></i> Bitkiler Yönetimi
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" id="nav-kullanicilar">
+                            <i class="bi bi-people"></i> Kullanıcı Yönetimi
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" id="nav-rahatsizliklar">
+                            <i class="bi bi-heart-pulse"></i> Rahatsızlıklar
+                        </a>
+                        <a href="#" class="list-group-item list-group-item-action" id="nav-ayarlar">
+                            <i class="bi bi-gear"></i> Sistem Ayarları
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Main Panel -->
+            <div class="col-md-9">
+                <!-- Bitkiler Yönetimi Paneli -->
+                <div id="panel-bitkiler" class="panel-content">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="panel-title">Bitkiler Yönetimi</h3>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#bitkiEkleModal">
+                            <i class="bi bi-plus-circle"></i> Yeni Bitki Ekle
+                        </button>
+                    </div>
+                    
+                    <!-- Filtreleme ve Arama -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Bitki adı ara..." id="bitkiArama">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" id="bitkiTipFiltreleme">
+                                        <option value="">Tüm Tipler</option>
+                                        <option value="Çiçek">Çiçek</option>
+                                        <option value="Yaprak">Yaprak</option>
+                                        <option value="Kök">Kök</option>
+                                        <option value="Meyve">Meyve</option>
+                                        <option value="Tohum">Tohum</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-success w-100" id="bitkiFiltrelemeBtn">
+                                        <i class="bi bi-funnel"></i> Filtrele
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Bitkiler Tablosu -->
+                    <div class="card border-0">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table" id="bitkilerTablosu">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Görsel</th>
+                                            <th>İsim</th>
+                                            <th>Bilimsel Ad</th>
+                                            <th>Tip</th>
+                                            <th>İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Bitkiler JavaScript ile doldurulacak -->
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <div class="spinner-border text-success" role="status">
+                                                    <span class="visually-hidden">Yükleniyor...</span>
+                                                </div>
+                                                <p class="mt-2">Bitkiler yükleniyor...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- Sayfalama -->
+                            <div class="d-flex justify-content-between align-items-center p-3" id="bitkilerPagination">
+                                <div>
+                                    <span class="text-muted">Toplam <span id="toplamBitki">0</span> bitki</span>
+                                </div>
+                                <ul class="pagination mb-0">
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Kullanıcı Yönetimi Paneli -->
+                <div id="panel-kullanicilar" class="panel-content d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h3 class="panel-title">Kullanıcı Yönetimi</h3>
+                        <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#kullaniciEkleModal">
+                            <i class="bi bi-person-plus"></i> Yeni Kullanıcı Ekle
+                        </button>
+                    </div>
+                    
+                    <!-- Filtreleme ve Arama -->
+                    <div class="card mb-4 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" placeholder="Kullanıcı adı veya e-posta ara..." id="kullaniciArama">
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <select class="form-select" id="kullaniciRolFiltreleme">
+                                        <option value="">Tüm Roller</option>
+                                        <option value="admin">Admin</option>
+                                        <option value="editor">Editör</option>
+                                        <option value="user">Kullanıcı</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <button class="btn btn-success w-100" id="kullaniciFiltrelemeBtn">
+                                        <i class="bi bi-funnel"></i> Filtrele
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Kullanıcılar Tablosu -->
+                    <div class="card border-0">
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table" id="kullanicilarTablosu">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Kullanıcı Adı</th>
+                                            <th>E-posta</th>
+                                            <th>Rol</th>
+                                            <th>Durum</th>
+                                            <th>İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Kullanıcılar JavaScript ile doldurulacak -->
+                                        <tr>
+                                            <td colspan="6" class="text-center py-5">
+                                                <div class="spinner-border text-success" role="status">
+                                                    <span class="visually-hidden">Yükleniyor...</span>
+                                                </div>
+                                                <p class="mt-2">Kullanıcılar yükleniyor...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rahatsızlıklar Paneli -->
+                <div id="panel-rahatsizliklar" class="panel-content d-none">
+                    <h3 class="mb-4">Rahatsızlıklar Yönetimi</h3>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i> Bu bölüm yapım aşamasındadır.
+                    </div>
+                </div>
+                
+                <!-- Ayarlar Paneli -->
+                <div id="panel-ayarlar" class="panel-content d-none">
+                    <h3 class="mb-4">Sistem Ayarları</h3>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i> Bu bölüm yapım aşamasındadır.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bitki Ekle Modal -->
+    <div class="modal fade" id="bitkiEkleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yeni Bitki Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="bitkiEkleForm">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="bitkiAdi" class="form-label">Bitki Adı*</label>
+                                <input type="text" class="form-control" id="bitkiAdi" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bitkiBilimselAd" class="form-label">Bilimsel Adı</label>
+                                <input type="text" class="form-control" id="bitkiBilimselAd">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="bitkiTip" class="form-label">Bitki Tipi*</label>
+                                <select class="form-select" id="bitkiTip" required>
+                                    <option value="">Seçiniz</option>
+                                    <option value="Çiçek">Çiçek</option>
+                                    <option value="Yaprak">Yaprak</option>
+                                    <option value="Kök">Kök</option>
+                                    <option value="Meyve">Meyve</option>
+                                    <option value="Tohum">Tohum</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="bitkiResimURL" class="form-label">Resim URL</label>
+                                <input type="url" class="form-control" id="bitkiResimURL" placeholder="https://ornek.com/resim.jpg">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bitkiFaydalar" class="form-label">Faydaları ve Açıklama*</label>
+                            <textarea class="form-control" id="bitkiFaydalar" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="bitkiKullanim" class="form-label">Kullanım Şekli</label>
+                            <textarea class="form-control" id="bitkiKullanim" rows="3"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">İlişkili Rahatsızlıklar</label>
+                            <div class="rahatsizliklar-container" id="rahatsizliklarListesi">
+                                <!-- JavaScript ile doldurulacak -->
+                                <div class="text-center py-2">
+                                    <div class="spinner-border spinner-border-sm text-success" role="status">
+                                        <span class="visually-hidden">Yükleniyor...</span>
+                                    </div>
+                                    <span class="ms-2">Rahatsızlıklar yükleniyor...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-success" id="bitkiKaydetBtn">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Kullanıcı Ekle Modal -->
+    <div class="modal fade" id="kullaniciEkleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Yeni Kullanıcı Ekle</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="kullaniciEkleForm">
+                        <div class="mb-3">
+                            <label for="kullaniciAdi" class="form-label">Kullanıcı Adı*</label>
+                            <input type="text" class="form-control" id="kullaniciAdi" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="kullaniciEmail" class="form-label">E-posta*</label>
+                            <input type="email" class="form-control" id="kullaniciEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="kullaniciSifre" class="form-label">Şifre*</label>
+                            <input type="password" class="form-control" id="kullaniciSifre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="kullaniciRol" class="form-label">Kullanıcı Rolü*</label>
+                            <select class="form-select" id="kullaniciRol" required>
+                                <option value="user">Kullanıcı</option>
+                                <option value="editor">Editör</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="button" class="btn btn-success" id="kullaniciKaydetBtn">Kaydet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & Custom Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="admin.js"></script>
+</body>
+</html> 

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoSifaa - Tedavi Programları</title>
+    <link rel="stylesheet" href="styles.css?v=2023052401">
+    <link rel="stylesheet" href="renk-duzelt.css?v=2023052401">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { background: #f5f5f5; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 32px 16px; }
+        .page-title { color: #2eae36; font-size: 2rem; margin: 24px 0 12px; text-align: center; }
+        .page-description { text-align: center; max-width: 700px; margin: 0 auto 30px; color: #666; line-height: 1.6; }
+        .programs-filters { display: flex; justify-content: center; margin-bottom: 30px; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+        .filter-group { display: flex; align-items: center; margin: 0 15px; }
+        .filter-label { font-weight: bold; margin-right: 10px; color: #555; }
+        .filter-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; color: #333; }
+        .programs-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 30px; margin-top: 20px; }
+        .program-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.07); transition: transform 0.3s; }
+        .program-card:hover { transform: translateY(-5px); }
+        .program-header { padding: 20px; background: #e8f5e9; position: relative; }
+        .program-difficulty { position: absolute; top: 20px; right: 20px; background: #2eae36; color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .program-title { color: #1b5e20; font-size: 20px; margin-bottom: 5px; }
+        .program-subtitle { color: #2e7d32; font-size: 14px; margin-bottom: 15px; }
+        .program-stats { display: flex; gap: 15px; }
+        .stat { display: flex; align-items: center; gap: 5px; font-size: 14px; color: #555; }
+        .program-content { padding: 20px; }
+        .program-description { color: #666; margin-bottom: 20px; line-height: 1.6; }
+        .herbs-used { margin-bottom: 20px; }
+        .herbs-label { font-weight: bold; margin-bottom: 10px; color: #333; font-size: 16px; }
+        .herbs-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .herb-pill { background: #e8f5e9; color: #2e7d32; padding: 5px 12px; border-radius: 15px; font-size: 14px; }
+        .program-features { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .feature { display: flex; align-items: flex-start; gap: 10px; }
+        .feature-icon { color: #2eae36; font-weight: bold; }
+        .feature-text { font-size: 14px; color: #555; }
+        .program-buttons { display: flex; gap: 10px; }
+        .view-program { flex: 2; background: #2eae36; color: #fff; border: none; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; }
+        .save-program { flex: 1; background: #fff; color: #2eae36; border: 1px solid #2eae36; padding: 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
+        .featured-program { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.10); }
+        .featured-image { width: 100%; height: 100%; object-fit: cover; }
+        .featured-content { padding: 40px; display: flex; flex-direction: column; justify-content: center; }
+        .featured-label { background: #ff9800; color: #fff; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; margin-bottom: 15px; }
+        .featured-title { color: #2eae36; font-size: 24px; margin-bottom: 15px; }
+        .featured-description { color: #666; margin-bottom: 25px; line-height: 1.6; }
+        .featured-button { background: #2eae36; color: #fff; border: none; padding: 15px 25px; border-radius: 8px; font-weight: bold; cursor: pointer; text-decoration: none; display: inline-block; margin-top: 10px; }
+        .disclaimer { background: #fff3e0; padding: 15px; border-radius: 8px; margin: 40px 0; border-left: 4px solid #ff9800; }
+        .disclaimer-title { color: #e65100; margin-bottom: 10px; font-weight: bold; }
+        .disclaimer-text { color: #666; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo"><i class="bi bi-tree-fill"></i> EcoSifaa</div>
+        <div class="nav-menu">
+            <a href="index.html" class="nav-item">Ana Sayfa</a>
+            <a href="bitkiler.html" class="nav-item">Şifalı Bitkiler</a>
+            <a href="rahatsizliklar.html" class="nav-item">Rahatsızlıklar</a>
+            <a href="tedavi-onerisi.html" class="nav-item">Tedavi Önerisi</a>
+            <a href="tedavi-programlari.html" class="nav-item">Tedavi Programları</a>
+            <a href="hastalik-arama.html" class="nav-item">Hastalık Ara</a>
+        </div>
+    </header>
+    <div class="container">
+        <h1 class="page-title">Doğal Tedavi Programları</h1>
+        <p class="page-description">Yaygın rahatsızlıklar için özel olarak hazırlanmış, uzmanlarımız tarafından geliştirilen kapsamlı bitkisel tedavi programlarını keşfedin.</p>
+        <div class="programs-filters">
+            <div class="filter-group">
+                <span class="filter-label">Kategori:</span>
+                <select class="filter-select">
+                    <option value="all">Tümü</option>
+                    <option value="digestive">Sindirim Sistemi</option>
+                    <option value="immune">Bağışıklık</option>
+                    <option value="sleep">Uyku ve Stres</option>
+                    <option value="pain">Ağrı Tedavisi</option>
+                    <option value="skin">Cilt Sağlığı</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Süre:</span>
+                <select class="filter-select">
+                    <option value="all">Tümü</option>
+                    <option value="short">1-7 Gün</option>
+                    <option value="medium">8-14 Gün</option>
+                    <option value="long">15+ Gün</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <span class="filter-label">Zorluk:</span>
+                <select class="filter-select">
+                    <option value="all">Tümü</option>
+                    <option value="beginner">Başlangıç</option>
+                    <option value="intermediate">Orta</option>
+                    <option value="advanced">İleri</option>
+                </select>
+            </div>
+        </div>
+        <div class="programs-grid">
+            <div class="featured-program">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Mevsimsel Bağışıklık Desteği" class="featured-image">
+                <div class="featured-content">
+                    <span class="featured-label">Öne Çıkan Program</span>
+                    <h2 class="featured-title">Mevsimsel Bağışıklık Güçlendirme Programı</h2>
+                    <p class="featured-description">Mevsim geçişlerinde bağışıklık sisteminizi desteklemek için tasarlanan bu 14 günlük program, soğuk algınlığı ve grip gibi yaygın hastalıklara karşı vücudunuzu korumaya yardımcı olur. Ekinezya, zencefil, zerdeçal ve propolis gibi güçlü doğal bileşenlerle hazırlanan karışımlar ve çaylar içerir.</p>
+                    <div class="herbs-list" style="margin-bottom: 20px;">
+                        <span class="herb-pill">Ekinezya</span>
+                        <span class="herb-pill">Zencefil</span>
+                        <span class="herb-pill">Zerdeçal</span>
+                        <span class="herb-pill">Propolis</span>
+                        <span class="herb-pill">C Vitamini</span>
+                        <span class="herb-pill">Adaçayı</span>
+                    </div>
+                    <a href="#" class="featured-button">Programa Başla</a>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-difficulty">Başlangıç</span>
+                    <h3 class="program-title">Stres Azaltma ve Uyku Kalitesi</h3>
+                    <h4 class="program-subtitle">Rahat bir uyku için 7 günlük program</h4>
+                    <div class="program-stats">
+                        <div class="stat">
+                            <span>⏱️</span>
+                            <span>7 Gün</span>
+                        </div>
+                        <div class="stat">
+                            <span>👤</span>
+                            <span>5,432 Kullanıcı</span>
+                        </div>
+                        <div class="stat">
+                            <span>⭐</span>
+                            <span>4.8/5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-content">
+                    <p class="program-description">Bu program, kaliteli uyku için gerekli olan rahatlama ve stresi azaltmayı hedefler. Yatmadan önce tüketilecek sakinleştirici bitki çayları ve uykuya dalmanızı kolaylaştıracak aromatik yağlar içerir.</p>
+                    <div class="herbs-used">
+                        <h4 class="herbs-label">Kullanılan Bitkiler:</h4>
+                        <div class="herbs-list">
+                            <span class="herb-pill">Papatya</span>
+                            <span class="herb-pill">Melisa</span>
+                            <span class="herb-pill">Lavanta</span>
+                            <span class="herb-pill">Ihlamur</span>
+                            <span class="herb-pill">Pasiflora</span>
+                        </div>
+                    </div>
+                    <div class="program-features">
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Günlük bitki çayı tarifleri</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Uyku rutini rehberi</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Akşam meditasyonu için sesli rehber</span>
+                        </div>
+                    </div>
+                    <div class="program-buttons">
+                        <a href="#" class="view-program">Programa Başla</a>
+                        <button class="save-program">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-difficulty">Orta</span>
+                    <h3 class="program-title">Sindirim Sistemi Detoksu</h3>
+                    <h4 class="program-subtitle">10 günlük detoks programı</h4>
+                    <div class="program-stats">
+                        <div class="stat">
+                            <span>⏱️</span>
+                            <span>10 Gün</span>
+                        </div>
+                        <div class="stat">
+                            <span>👤</span>
+                            <span>4,187 Kullanıcı</span>
+                        </div>
+                        <div class="stat">
+                            <span>⭐</span>
+                            <span>4.7/5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-content">
+                    <p class="program-description">Sindirim sisteminizi temizlemek, şişkinliği azaltmak ve bağırsak sağlığınızı iyileştirmek için özel olarak tasarlanmış 10 günlük bir programdır. Probiyotik ve prebiyotik açısından zengin bitkisel karışımlar içerir.</p>
+                    <div class="herbs-used">
+                        <h4 class="herbs-label">Kullanılan Bitkiler:</h4>
+                        <div class="herbs-list">
+                            <span class="herb-pill">Enginar</span>
+                            <span class="herb-pill">Rezene</span>
+                            <span class="herb-pill">Nane</span>
+                            <span class="herb-pill">Papatya</span>
+                            <span class="herb-pill">Zencefil</span>
+                            <span class="herb-pill">Keten Tohumu</span>
+                        </div>
+                    </div>
+                    <div class="program-features">
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Günlük detoks içecekleri</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Beslenme önerileri</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Sindirim destekleyici masaj teknikleri</span>
+                        </div>
+                    </div>
+                    <div class="program-buttons">
+                        <a href="#" class="view-program">Programa Başla</a>
+                        <button class="save-program">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+            <div class="program-card">
+                <div class="program-header">
+                    <span class="program-difficulty">Başlangıç</span>
+                    <h3 class="program-title">Migren ve Baş Ağrısı Rahatlatma</h3>
+                    <h4 class="program-subtitle">Ağrıları azaltmak için 5 günlük hızlı program</h4>
+                    <div class="program-stats">
+                        <div class="stat">
+                            <span>⏱️</span>
+                            <span>5 Gün</span>
+                        </div>
+                        <div class="stat">
+                            <span>👤</span>
+                            <span>3,921 Kullanıcı</span>
+                        </div>
+                        <div class="stat">
+                            <span>⭐</span>
+                            <span>4.5/5</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="program-content">
+                    <p class="program-description">Migren ve baş ağrılarının sıklığını ve şiddetini azaltmak için bitkisel çözümlerden oluşan 5 günlük bir programdır. Anti-enflamatuar özelliklere sahip bitkiler ve rahatlatıcı aromalarla hazırlanan tedaviler sunar.</p>
+                    <div class="herbs-used">
+                        <h4 class="herbs-label">Kullanılan Bitkiler:</h4>
+                        <div class="herbs-list">
+                            <span class="herb-pill">Mürver</span>
+                            <span class="herb-pill">Nane</span>
+                            <span class="herb-pill">Zerdeçal</span>
+                            <span class="herb-pill">Lavanta</span>
+                            <span class="herb-pill">Biberiye</span>
+                        </div>
+                    </div>
+                    <div class="program-features">
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Ağrı hafifletici bitki çayları</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Şakak masajı teknikleri</span>
+                        </div>
+                        <div class="feature">
+                            <span class="feature-icon">✓</span>
+                            <span class="feature-text">Migren tetikleyicileri rehberi</span>
+                        </div>
+                    </div>
+                    <div class="program-buttons">
+                        <a href="#" class="view-program">Programa Başla</a>
+                        <button class="save-program">Kaydet</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="disclaimer">
+            <h3 class="disclaimer-title">Önemli Sağlık Uyarısı</h3>
+            <p class="disclaimer-text">Tedavi programlarımız hafif rahatsızlıklar içindir ve profesyonel tıbbi tavsiye, teşhis veya tedavi yerine geçmez. Kronik rahatsızlıklar, şiddetli semptomlar veya düzenli ilaç kullanımı varsa, bu programlara başlamadan önce doktorunuza danışınız. Hamilelik, emzirme döneminde veya alerjik bünyeye sahipseniz, bitkisel tedavileri kullanmadan önce bir sağlık uzmanına danışmanız önerilir.</p>
+        </div>
+    </div>
+    <!-- FOOTER -->
+    <footer style="background: #2eae36; padding: 28px 0; margin-top: 40px; border-top: 2px solid #2eae36;">
+        <div style="max-width: 1100px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 40px; justify-content: space-between;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #fff; margin-bottom: 16px;">Hakkımızda</h3>
+                <p style="color: #e6ffe6; font-size: 15px; line-height: 1.7;">EcoSifaa, şifalı bitkiler ve doğal tedavi yöntemleri hakkında güvenilir ve güncel bilgiler sunan bir platformdur. Amacımız, doğanın sunduğu şifayı herkes için ulaşılabilir kılmak ve sağlıklı yaşamı desteklemektir.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <h3 style="color: #fff; margin-bottom: 16px;">İletişim</h3>
+                <p style="color: #e6ffe6; font-size: 15px; line-height: 1.7;">
+                    E-posta: <a href="mailto:info@ecosifaa.com" style="color: #fff; text-decoration: underline;">info@ecosifaa.com</a><br>
+                    Telefon: <a href="tel:+905551112233" style="color: #fff; text-decoration: underline;">+90 555 111 22 33</a><br>
+                    Adres: İstanbul, Türkiye
+                </p>
+            </div>
+        </div>
+        <div style="text-align: center; color: #e6ffe6; font-size: 13px; margin-top: 24px;">&copy; 2024 EcoSifaa. Tüm hakları saklıdır.</div>
+    </footer>
+</body>
+</html> 
