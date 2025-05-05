@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -63,6 +64,7 @@ class Bitki(models.Model):
     resim = models.ImageField(upload_to='bitkiler/', blank=True, null=True)
     faydalar = models.TextField()
     kullanim = models.TextField()
+    kullanim_alani = models.TextField(blank=True)
     hazirlama = models.TextField()
     uyarilar = models.TextField(blank=True)
     doz = models.TextField(blank=True)
@@ -127,3 +129,37 @@ class Bitki(models.Model):
     def set_kontrendikasyonlar_list(self, kontrendikasyonlar_list):
         """Kontrendikasyonlar listesini string olarak kaydeder"""
         self.kontrendikasyonlar = ', '.join(kontrendikasyonlar_list)
+
+class Karisim(models.Model):
+    isim = models.CharField(max_length=100, unique=True)
+    bitkiler = models.ManyToManyField(Bitki, related_name='karisimlar')
+    faydalar = models.TextField()
+    kullanim_durumu = models.TextField()
+    hazirlama = models.TextField()
+    olusturulma_tarihi = models.DateTimeField(default=timezone.now)
+    guncellenme_tarihi = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Karışım"
+        verbose_name_plural = "Karışımlar"
+        ordering = ['isim']
+        indexes = [
+            models.Index(fields=['isim']),
+        ]
+
+    def __str__(self):
+        return self.isim
+
+class KullaniciAramaGecmisi(models.Model):
+    kullanici = models.ForeignKey(User, on_delete=models.CASCADE, related_name='arama_gecmisi')
+    rahatsizlik = models.ForeignKey(Rahatsizlik, on_delete=models.CASCADE)
+    arama_tarihi = models.DateTimeField(auto_now_add=True)
+    konum = models.CharField(max_length=100, blank=True, null=True)
+    
+    class Meta:
+        verbose_name = 'Kullanıcı Arama Geçmişi'
+        verbose_name_plural = 'Kullanıcı Arama Geçmişleri'
+        ordering = ['-arama_tarihi']
+    
+    def __str__(self):
+        return f"{self.kullanici.username} - {self.rahatsizlik.isim}"

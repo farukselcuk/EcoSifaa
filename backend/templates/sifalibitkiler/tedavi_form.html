@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tedavi Önerisi - EcoSifaa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-success shadow-lg">
+                <div class="card-header bg-success text-white py-3">
+                    <h3 class="card-title mb-0">
+                        <i class="fas fa-heartbeat me-2"></i>
+                        Tedavi Önerisi Al
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="lead text-muted mb-4">
+                        Rahatsızlığınızı seçin ve size uygun şifalı bitkileri önerelim.
+                    </p>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            Lütfen formdaki hataları düzeltiniz.
+                        </div>
+                        {% endif %}
+
+                        <div class="mb-4">
+                            <label for="{{ form.rahatsizlik.id_for_label }}" class="form-label">
+                                <i class="fas fa-disease me-2"></i>
+                                Rahatsızlık
+                            </label>
+                            {{ form.rahatsizlik.errors }}
+                            <select name="{{ form.rahatsizlik.name }}" id="{{ form.rahatsizlik.id_for_label }}" 
+                                    class="form-select form-select-lg {% if form.rahatsizlik.errors %}is-invalid{% endif %}" required>
+                                <option value="">Rahatsızlık seçiniz...</option>
+                                {% for value, text in form.rahatsizlik.field.choices %}
+                                <option value="{{ value }}" {% if form.rahatsizlik.value == value %}selected{% endif %}>
+                                    {{ text }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                            {% if form.rahatsizlik.help_text %}
+                            <div class="form-text">{{ form.rahatsizlik.help_text }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.tekli_bitki }}
+                                    <label class="form-check-label" for="{{ form.tekli_bitki.id_for_label }}">
+                                        <i class="fas fa-leaf me-2"></i>
+                                        Tekli Bitkiler
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    {{ form.karisim }}
+                                    <label class="form-check-label" for="{{ form.karisim.id_for_label }}">
+                                        <i class="fas fa-mortar-pestle me-2"></i>
+                                        Karışımlar
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-search me-2"></i>
+                                Tedavi Önerisi Al
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-select-lg {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+.form-check {
+    padding: 1rem;
+    border: 1px solid #dee2e6;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+}
+.form-check:hover {
+    background-color: #f8f9fa;
+    border-color: #198754;
+    cursor: pointer;
+}
+.form-check-input:checked ~ .form-check-label {
+    color: #198754;
+}
+</style>
+{% endblock %} 

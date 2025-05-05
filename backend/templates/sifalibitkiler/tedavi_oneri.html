@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Tedavi Önerileri - {{ rahatsizlik.isim }} - EcoSifaa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'tedavi_form' %}" class="text-success">Tedavi Önerisi</a></li>
+                    <li class="breadcrumb-item active">{{ rahatsizlik.isim }}</li>
+                </ol>
+            </nav>
+            
+            <h1 class="display-4 text-success mb-3">
+                <i class="fas fa-heartbeat me-3"></i>
+                {{ rahatsizlik.isim }}
+            </h1>
+            <p class="lead text-muted mb-4">{{ rahatsizlik.aciklama }}</p>
+        </div>
+    </div>
+
+    {% if bitkiler %}
+    <div class="row g-4">
+        {% for bitki in bitkiler %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 border-success shadow-sm hover-card">
+                {% if bitki.resim %}
+                <img src="{{ bitki.resim.url }}" class="card-img-top" alt="{{ bitki.isim }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                    <i class="fas fa-leaf fa-3x text-success opacity-50"></i>
+                </div>
+                {% endif %}
+                
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <h5 class="card-title text-success mb-0">{{ bitki.isim }}</h5>
+                        <span class="badge bg-{{ bitki.tip|yesno:'success,info' }}">
+                            {{ bitki.get_tip_display }}
+                        </span>
+                    </div>
+                    
+                    {% if bitki.kullanim %}
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Kullanım Şekli
+                        </small>
+                        <p class="card-text">{{ bitki.kullanim|truncatewords:20 }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    {% if bitki.hazirlama %}
+                    <div class="mb-3">
+                        <small class="text-muted d-block mb-1">
+                            <i class="fas fa-mortar-pestle me-1"></i>
+                            Hazırlama
+                        </small>
+                        <p class="card-text">{{ bitki.hazirlama|truncatewords:20 }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="card-footer bg-transparent border-success">
+                    <a href="{% url 'bitki_detay' bitki.pk %}" class="btn btn-outline-success w-100">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Detaylı Bilgi
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        Bu rahatsızlık için henüz kayıtlı şifalı bitki bulunmamaktadır.
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.hover-card {
+    transition: all 0.3s ease;
+}
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+.card-title {
+    font-weight: 600;
+}
+</style>
+{% endblock %} 

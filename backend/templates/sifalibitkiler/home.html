@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Ana Sayfa - EcoSifaa{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1 class="display-4 text-success mb-4">
+                EcoSifaa ile Şifalı Bitkiler Dünyasını Keşfedin
+            </h1>
+            <p class="lead text-muted">
+                Doğanın sunduğu şifalı bitkilerin faydalarını, kullanım şekillerini ve hangi 
+                rahatsızlıklara iyi geldiğini öğrenebileceğiniz kapsamlı bir kaynak.
+            </p>
+            <div class="mt-4">
+                <a href="{% url 'bitki_listesi' %}" class="btn btn-success btn-lg me-3">
+                    Bitkileri Keşfet
+                </a>
+                <a href="{% url 'rahatsizlik_listesi' %}" class="btn btn-outline-success btn-lg">
+                    Rahatsızlıklar
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            {% if not user.is_authenticated %}
+            <div class="card shadow-sm">
+                <div class="card-body p-4">
+                    <h4 class="card-title mb-4">Giriş Yap</h4>
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="username" class="form-label">Kullanıcı Adı</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Şifre</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">Giriş Yap</button>
+                        </div>
+                        <div class="text-center mt-3">
+                            <p class="mb-0">Hesabınız yok mu? <a href="{% url 'register' %}" class="text-success">Kayıt Ol</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="container py-5 bg-light">
+    <h2 class="text-center mb-5">EcoSifaa ile Neler Yapabilirsiniz?</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="text-center">
+                <div class="feature-icon bg-success text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <i class="bi bi-flower1 fs-1"></i>
+                </div>
+                <h3>Şifalı Bitkiler</h3>
+                <p class="text-muted">Doğanın bize sunduğu şifalı bitkileri keşfedin ve faydalarını öğrenin.</p>
+                <a href="{% url 'bitki_listesi' %}" class="btn btn-outline-success">Bitkileri İncele</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center">
+                <div class="feature-icon bg-success text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <i class="bi bi-heart-pulse fs-1"></i>
+                </div>
+                <h3>Rahatsızlıklar</h3>
+                <p class="text-muted">Rahatsızlıklar hakkında detaylı bilgi edinin ve doğal tedavi yöntemlerini öğrenin.</p>
+                <a href="{% url 'rahatsizlik_listesi' %}" class="btn btn-outline-success">Rahatsızlıkları İncele</a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center">
+                <div class="feature-icon bg-success text-white rounded-circle mb-3 mx-auto d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                    <i class="bi bi-clipboard2-pulse fs-1"></i>
+                </div>
+                <h3>Tedavi Önerileri</h3>
+                <p class="text-muted">Rahatsızlığınıza uygun doğal tedavi yöntemlerini bulun.</p>
+                <a href="{% url 'tedavi_form' %}" class="btn btn-outline-success">Tedavi Önerisi Al</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <h2 class="text-success mb-4">EcoSifaa Projesi Nedir?</h2>
+            <p class="lead">
+                EcoSifaa, doğanın sunduğu şifalı bitkilerin ve onların potansiyel faydalarının geniş 
+                bir veritabanını sunan bir platformdur. Projemiz, geleneksel tıp bilgisi ile modern 
+                bilimsel araştırmaları bir araya getirerek, doğal tedavi yöntemleri hakkında kapsamlı 
+                bilgi sağlamayı amaçlamaktadır.
+            </p>
+        </div>
+        <div class="col-lg-4">
+            <div class="alert alert-warning">
+                <h5 class="alert-heading">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Bilgilendirme
+                </h5>
+                <p class="mb-0 small">
+                    Bu sitede bulunan bilgiler yalnızca bilgilendirme amaçlıdır ve profesyonel tıbbi tavsiye, 
+                    teşhis veya tedavi yerine geçmez. Herhangi bir sağlık sorunu veya durumu için her zaman 
+                    sağlık uzmanınıza danışmanız önerilir.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

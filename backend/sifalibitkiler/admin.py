@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Bitki, Rahatsizlik
+from .models import Bitki, Rahatsizlik, Karisim
 
 @admin.register(Rahatsizlik)
 class RahatsizlikAdmin(admin.ModelAdmin):
@@ -46,6 +46,25 @@ class BitkiAdmin(admin.ModelAdmin):
         ('Ek Bilgiler', {
             'fields': ('saklama_kosullari', 'raf_omru', 'kaynak'),
             'classes': ('collapse',)
+        }),
+        ('Zaman Bilgileri', {
+            'fields': ('olusturulma_tarihi', 'guncellenme_tarihi'),
+            'classes': ('collapse',)
+        }),
+    )
+
+@admin.register(Karisim)
+class KarisimAdmin(admin.ModelAdmin):
+    list_display = ('isim', 'olusturulma_tarihi', 'guncellenme_tarihi')
+    search_fields = ('isim', 'faydalar', 'kullanim_durumu', 'hazirlama')
+    filter_horizontal = ('bitkiler',)
+    readonly_fields = ('olusturulma_tarihi', 'guncellenme_tarihi')
+    fieldsets = (
+        ('Temel Bilgiler', {
+            'fields': ('isim', 'bitkiler')
+        }),
+        ('Kullanım Bilgileri', {
+            'fields': ('faydalar', 'kullanim_durumu', 'hazirlama'),
         }),
         ('Zaman Bilgileri', {
             'fields': ('olusturulma_tarihi', 'guncellenme_tarihi'),

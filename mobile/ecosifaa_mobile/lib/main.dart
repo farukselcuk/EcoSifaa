@@ -5,6 +5,7 @@ import 'package:ecosifaa_mobile/screens/home_screen.dart';
 import 'package:ecosifaa_mobile/providers/bitki_provider.dart';
 import 'package:ecosifaa_mobile/providers/rahatsizlik_provider.dart';
 import 'package:ecosifaa_mobile/providers/theme_provider.dart';
+import 'package:ecosifaa_mobile/providers/auth_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => BitkiProvider()),
         ChangeNotifierProvider(create: (_) => RahatsizlikProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, child) {

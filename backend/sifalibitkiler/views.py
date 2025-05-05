@@ -3,8 +3,22 @@ from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import JsonResponse
-from .models import Bitki, Rahatsizlik
+from .models import Bitki, Rahatsizlik, KullaniciAramaGecmisi
 from .forms import BitkiForm, RahatsizlikForm, TedaviForm
+from rest_framework import viewsets, permissions
+from .serializers import (
+    BitkiListSerializer,
+    BitkiDetailSerializer,
+    RahatsizlikSerializer,
+    KullaniciAramaGecmisiSerializer
+)
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from django.utils import timezone
+from django.db.models import Count
+from datetime import timedelta
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'sifalibitkiler/home.html')
@@ -132,3 +146,46 @@ def rahatsizlik_listesi(request):
     return render(request, 'sifalibitkiler/rahatsizlik_listesi.html', {
         'rahatsizliklar': rahatsizliklar
     })
+
+class KullaniciAramaGecmisiViewSet(viewsets.ModelViewSet):
+    serializer_class = KullaniciAramaGecmisiSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_queryset(self):
+        return KullaniciAramaGecmisi.objects.filter(kullanici=self.request.user)
+    
+    @action(detail=False, methods=['get'])
+    def trend_rahatsizliklar(self, request):
+        # Son 24 saatte en çok aranan rahatsızlıkları getir
+        son_24_saat = timezone.now() - timedelta(hours=24)
+        trend_rahatsizliklar = KullaniciAramaGecmisi.objects.filter(
+            arama_tarihi__gte=son_24_saat
+        ).values('rahatsizlik__isim').annotate(
+            arama_sayisi=Count('id')
+        ).order_by('-arama_sayisi')[:10]
+        
+        return Response(trend_rahatsizliklar)
+    
+    @action(detail=False, methods=['get'])
+    def konum_bazli_trend(self, request):
+        # Konum bazlı trend analizi
+        konum_bazli_trend = KullaniciAramaGecmisi.objects.filter(
+            konum__isnull=False
+        ).values('konum', 'rahatsizlik__isim').annotate(
+            arama_sayisi=Count('id')
+        ).order_by('-arama_sayisi')
+        
+        return Response(konum_bazli_trend)
+
+# Kullanıcı kayıt görünümü
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Hesap oluşturuldu: {username}! Şimdi giriş yapabilirsiniz.')
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})

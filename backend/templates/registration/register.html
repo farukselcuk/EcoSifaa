@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Kayıt Ol - EcoSifaa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Hesap Oluştur</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.errors %}
+                            <div class="alert alert-danger">
+                                Kayıt işlemi sırasında hatalar meydana geldi.
+                            </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Kullanıcı Adı:</label>
+                            <input type="text" name="username" id="id_username" class="form-control {% if form.username.errors %}is-invalid{% endif %}" required autofocus>
+                            {% if form.username.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">150 karakterden az, yalnızca harfler, rakamlar ve @/./+/-/_ karakterlerine izin verilir.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password1" class="form-label">Şifre:</label>
+                            <input type="password" name="password1" id="id_password1" class="form-control {% if form.password1.errors %}is-invalid{% endif %}" required>
+                            {% if form.password1.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password1.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">
+                                <ul>
+                                    <li>Şifreniz diğer kişisel bilgilerinizle çok benzer olamaz.</li>
+                                    <li>Şifreniz en az 8 karakter içermelidir.</li>
+                                    <li>Şifreniz yaygın olarak kullanılan bir şifre olamaz.</li>
+                                    <li>Şifreniz tamamen sayısal olamaz.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password2" class="form-label">Şifreyi Doğrula:</label>
+                            <input type="password" name="password2" id="id_password2" class="form-control {% if form.password2.errors %}is-invalid{% endif %}" required>
+                            {% if form.password2.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.password2.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <div class="form-text">Doğrulama için şifrenizi tekrar giriniz.</div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="text-center">
+                        <p class="mb-0">Zaten bir hesabınız var mı? <a href="{% url 'login' %}">Giriş Yap</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

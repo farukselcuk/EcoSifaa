@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rahatsızlıklar - EcoSifaa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-4 text-success mb-3">Rahatsızlıklar</h1>
+            <p class="lead text-muted">Şifalı bitkilerle tedavi edilebilen rahatsızlıkların listesi</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        {% for rahatsizlik in rahatsizliklar %}
+        <div class="col-md-4">
+            <div class="card h-100 border-success shadow-sm hover-shadow">
+                <div class="card-body">
+                    <h5 class="card-title text-success">{{ rahatsizlik.isim }}</h5>
+                    <p class="card-text text-muted">{{ rahatsizlik.aciklama|truncatewords:30 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-success">{{ rahatsizlik.bitkiler.count }} Bitki</span>
+                        <a href="{% url 'tedavi_form' %}?rahatsizlik={{ rahatsizlik.id }}" class="btn btn-outline-success">
+                            Tedavi Önerisi Al
+                            <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Henüz rahatsızlık kaydı bulunmamaktadır.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+}
+</style>
+{% endblock %} 

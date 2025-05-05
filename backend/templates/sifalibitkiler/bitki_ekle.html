@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Yeni Bitki Ekle - EcoSifaa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="mb-0">Yeni Bitki Ekle</h2>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="id_isim" class="form-label">Bitki Adı</label>
+                            <input type="text" class="form-control" id="id_isim" name="isim" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_tip" class="form-label">Bitki Tipi</label>
+                            <select class="form-select" id="id_tip" name="tip" required>
+                                <option value="tekli">Tekli</option>
+                                <option value="karisim">Karışım</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_resim" class="form-label">Bitki Görseli</label>
+                            <input type="file" class="form-control" id="id_resim" name="resim" accept="image/*">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_faydalar" class="form-label">Faydaları</label>
+                            <textarea class="form-control" id="id_faydalar" name="faydalar" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_kullanim_alani" class="form-label">Kullanım Alanı</label>
+                            <textarea class="form-control" id="id_kullanim_alani" name="kullanim_alani" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_kullanim" class="form-label">Kullanım Şekli</label>
+                            <textarea class="form-control" id="id_kullanim" name="kullanim" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_hazirlama" class="form-label">Hazırlama Yöntemi</label>
+                            <textarea class="form-control" id="id_hazirlama" name="hazirlama" rows="3" required></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="id_uyarilar" class="form-label">Uyarılar</label>
+                            <textarea class="form-control" id="id_uyarilar" name="uyarilar" rows="3"></textarea>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Bitkiyi Kaydet</button>
+                            <a href="{% url 'bitki_listesi' %}" class="btn btn-outline-secondary">İptal</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

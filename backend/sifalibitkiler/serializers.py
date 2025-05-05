@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Bitki, Rahatsizlik
+from .models import Bitki, Rahatsizlik, KullaniciAramaGecmisi
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,8 +29,8 @@ class BitkiListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bitki
         fields = [
-            'id', 'isim', 'tip', 'resim', 'rahatsizliklar_isimleri', 
-            'bilimsel_ad', 'olusturulma_tarihi', 'guncellenme_tarihi'
+            'id', 'isim', 'tip', 'resim', 'faydalar', 'kullanim', 'kullanim_alani', 'hazirlama', 'uyarilar',
+            'rahatsizliklar_isimleri', 'bilimsel_ad', 'olusturulma_tarihi', 'guncellenme_tarihi'
         ]
         read_only_fields = ['id', 'olusturulma_tarihi', 'guncellenme_tarihi']
     
@@ -72,8 +72,15 @@ class BitkiCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bitki
         fields = [
-            'isim', 'tip', 'resim', 'faydalar', 'kullanim', 'hazirlama', 
-            'uyarilar', 'doz', 'rahatsizliklar', 'etiketler',
-            'mevsim', 'yan_etkiler', 'kontrendikasyonlar', 'saklama_kosullari',
-            'raf_omru', 'kaynak', 'bilimsel_ad', 'aile', 'cins', 'tur'
+            'id', 'isim', 'tip', 'resim', 'faydalar', 'kullanim', 'kullanim_alani', 'hazirlama', 'uyarilar',
+            'doz', 'rahatsizliklar', 'etiketler', 'mevsim', 'yan_etkiler', 'kontrendikasyonlar',
+            'saklama_kosullari', 'raf_omru', 'kaynak', 'bilimsel_ad', 'aile', 'cins', 'tur'
         ] 
+
+class KullaniciAramaGecmisiSerializer(serializers.ModelSerializer):
+    rahatsizlik = RahatsizlikSerializer(read_only=True)
+    
+    class Meta:
+        model = KullaniciAramaGecmisi
+        fields = ['id', 'kullanici', 'rahatsizlik', 'arama_tarihi', 'konum']
+        read_only_fields = ['kullanici', 'arama_tarihi'] 

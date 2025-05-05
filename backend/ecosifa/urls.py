@@ -28,6 +28,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include('sifalibitkiler.api_urls')),  # API endpoint'leri
     path('', include('sifalibitkiler.urls')),             # Web uygulaması
+    
+    # Kimlik doğrulama URL'leri
+    path('accounts/', include('django.contrib.auth.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Debug modunda statik dosyaları serve etmek için

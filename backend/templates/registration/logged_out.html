@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Çıkış Yapıldı - EcoSifaa{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">Çıkış Yapıldı</h3>
+                </div>
+                <div class="card-body text-center">
+                    <p class="mb-4">Başarıyla çıkış yaptınız. Tekrar görüşmek üzere!</p>
+                    
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'login' %}" class="btn btn-primary">Tekrar Giriş Yap</a>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Ana Sayfaya Dön</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
