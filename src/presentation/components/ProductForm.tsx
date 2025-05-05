@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../infrastructure/api';
 import { Product } from '../../domain/entities/Product';
 
-type ProductFormData = Omit<Product, 'id' | 'createdAt' | 'updatedAt'>;
+type ProductFormData = Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'updateStock' | 'updatePrice'>;
 
 const ProductForm: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -13,6 +13,8 @@ const ProductForm: React.FC = () => {
         description: '',
         price: 0,
         category: '',
+        stock: 0,
+        imageUrl: ''
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -22,7 +24,7 @@ const ProductForm: React.FC = () => {
             const fetchProduct = async () => {
                 try {
                     const response = await api.get(`/products/${id}`);
-                    const { id: _, createdAt, updatedAt, ...productData } = response.data;
+                    const { id: _, createdAt, updatedAt, updateStock, updatePrice, ...productData } = response.data;
                     setProduct(productData);
                 } catch (err) {
                     setError('Failed to fetch product');
@@ -54,7 +56,7 @@ const ProductForm: React.FC = () => {
         const { name, value } = e.target;
         setProduct((prev) => ({
             ...prev,
-            [name]: name === 'price' ? parseFloat(value) : value,
+            [name]: name === 'price' || name === 'stock' ? parseFloat(value) : value,
         }));
     };
 
@@ -103,6 +105,33 @@ const ProductForm: React.FC = () => {
                         required
                         min="0"
                         step="0.01"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Stock
+                    </label>
+                    <input
+                        type="number"
+                        name="stock"
+                        value={product.stock}
+                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        required
+                        min="0"
+                    />
+                </div>
+                <div className="mb-4">
+                    <label className="block text-gray-700 text-sm font-bold mb-2">
+                        Image URL
+                    </label>
+                    <input
+                        type="url"
+                        name="imageUrl"
+                        value={product.imageUrl}
+                        onChange={handleChange}
+                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        required
                     />
                 </div>
                 <div className="mb-4">

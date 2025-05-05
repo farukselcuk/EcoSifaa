@@ -9,38 +9,61 @@ export class ProductRepositoryImpl implements ProductRepository {
         this.prisma = new PrismaClient();
     }
 
-    async findAll(): Promise<Product[]> {
-        return this.prisma.product.findMany();
+    private mapToProduct(data: any): Product {
+        return {
+            ...data,
+            updateStock: (quantity: number) => {
+                this.prisma.product.update({
+                    where: { id: data.id },
+                    data: { stock: quantity }
+                });
+            },
+            updatePrice: (newPrice: number) => {
+                this.prisma.product.update({
+                    where: { id: data.id },
+                    data: { price: newPrice }
+                });
+            }
+        };
     }
 
-    async findById(id: number): Promise<Product | null> {
-        return this.prisma.product.findUnique({
-            where: { id },
+    async findAll(): Promise<Product[]> {
+        const products = await this.prisma.product.findMany();
+        return products.map(this.mapToProduct);
+    }
+
+    async findById(id: string): Promise<Product | null> {
+        const product = await this.prisma.product.findUnique({
+            where: { id }
         });
+        return product ? this.mapToProduct(product) : null;
     }
 
     async findByCategory(category: string): Promise<Product[]> {
-        return this.prisma.product.findMany({
-            where: { category },
+        const products = await this.prisma.product.findMany({
+            where: { category }
         });
+        return products.map(this.mapToProduct);
     }
 
-    async create(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt'>): Promise<Product> {
-        return this.prisma.product.create({
-            data: product,
+    async create(product: Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'updateStock' | 'updatePrice'>): Promise<Product> {
+        const created = await this.prisma.product.create({
+            data: product
         });
+        return this.mapToProduct(created);
     }
 
-    async update(id: number, product: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt'>>): Promise<Product> {
-        return this.prisma.product.update({
+    async update(id: string, product: Partial<Omit<Product, 'id' | 'createdAt' | 'updatedAt' | 'updateStock' | 'updatePrice'>>): Promise<Product> {
+        const updated = await this.prisma.product.update({
             where: { id },
-            data: product,
+            data: product
         });
+        return this.mapToProduct(updated);
     }
 
-    async delete(id: number): Promise<void> {
+    async delete(id: string): Promise<void> {
         await this.prisma.product.delete({
-            where: { id },
+            where: { id }
         });
     }
 } 

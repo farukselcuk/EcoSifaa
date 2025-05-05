@@ -15,7 +15,7 @@ export class ProductController {
 
     async getProduct(req: Request, res: Response): Promise<void> {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const product = await this.productService.getProduct(id);
             if (product) {
                 res.json(product);
@@ -48,7 +48,7 @@ export class ProductController {
 
     async updateProduct(req: Request, res: Response): Promise<void> {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             const product = await this.productService.updateProduct(id, req.body);
             res.json(product);
         } catch (error) {
@@ -58,7 +58,7 @@ export class ProductController {
 
     async deleteProduct(req: Request, res: Response): Promise<void> {
         try {
-            const id = parseInt(req.params.id);
+            const id = req.params.id;
             await this.productService.deleteProduct(id);
             res.status(204).send();
         } catch (error) {
